@@ -1,7 +1,9 @@
 package IPlugin;
 
+import java.awt.Point;
+
 public interface IMovement {
 
 	
-	public int move();
+	public Point move(Point positionIni);
 }
