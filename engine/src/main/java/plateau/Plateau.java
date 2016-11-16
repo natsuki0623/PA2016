@@ -28,5 +28,5 @@ public class Plateau {
 		t.setVisible(true);
 		t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
+	
 }
