@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>motor</artifactId>
+    <artifactId>engine</artifactId>
 
     <dependencies>
         <dependency>

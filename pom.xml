@@ -7,7 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <modules>
     <module>plugins</module>
-    <module>motor</module>
+    <module>engine</module>
     <module>interface</module>
   </modules>
   <packaging>pom</packaging>
