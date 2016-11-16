@@ -1,5 +1,8 @@
 package robot;
 
+import IPlugin.IAttack;
+import IPlugin.IMovement;
+
 import java.awt.*;
 
 /**
@@ -12,31 +15,18 @@ public class Robot {
     private int life;
     private int energy;
     private Point position;
+    private IAttack attack;
+    private IMovement movement;
 
-
-    public Robot(Point position) {
-        this.life = 100;
-        this.energy = 100;
-        this.position = position;
-    }
-
-    public Robot(int x, int y) {
-        this.life = 100;
-        this.energy = 100;
-        this.position = new Point(x, y);
-    }
-
-    public Robot(int life, int energy, int x, int y) {
-        this.life = life;
-        this.energy = energy;
-        this.position = new Point(x, y);
-    }
-
-    public Robot(int life, int energy, Point position) {
+    public Robot(int life, int energy, Point position, IAttack attack, IMovement movement) {
         this.life = life;
         this.energy = energy;
         this.position = position;
+        this.attack = attack;
+        this.movement = movement;
     }
+
+
 
     public int getLife() {
         return life;
@@ -54,5 +44,27 @@ public class Robot {
         this.energy = energy;
     }
 
+    public Point getPosition() {
+        return position;
+    }
 
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public IAttack getAttack() {
+        return attack;
+    }
+
+    public void setAttack(IAttack attack) {
+        this.attack = attack;
+    }
+
+    public IMovement getMovement() {
+        return movement;
+    }
+
+    public void setMovement(IMovement movement) {
+        this.movement = movement;
+    }
 }
