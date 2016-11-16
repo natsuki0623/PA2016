@@ -1,4 +1,4 @@
-package plugin;
+package pluginMovement;
 
 /**
  * Class created on 16/11/2016
