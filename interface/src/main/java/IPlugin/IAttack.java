@@ -6,5 +6,6 @@ package IPlugin;
 
 public interface IAttack {
 	public String toString();
-	public void attaque();
+	public int attaque();
+	public int range();
 }
