@@ -4,7 +4,7 @@ package IPlugin;
  * Interface permettant de gérer les plugins d'attaques
  */
 
-public interface IAttaque {
+public interface IAttack {
 	public String toString();
 	public void attaqueDistance();
 	public void attaqueCaC();
