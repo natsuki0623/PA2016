@@ -6,4 +6,8 @@ package robot;
  * @author JuIngong
  */
 public class Robot {
+
+    private int life;
+    private int energy;
+
 }
