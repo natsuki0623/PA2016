@@ -6,7 +6,6 @@ import IPlugin.IMovement;
 
 public class MovementDefault implements IMovement{
 
-	@Override
 	public Point move(Point positionIni){
 		int x=(int) positionIni.getX();
 		int y=(int) positionIni.getY();
