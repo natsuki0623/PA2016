@@ -3,7 +3,6 @@ package entity.robot;
 import IPlugin.IAttack;
 import IPlugin.IMovement;
 import entity.ObjectHitbox;
-import entity.object.Damage;
 
 import java.awt.*;
 
@@ -58,7 +57,7 @@ public class Robot extends ObjectHitbox {
                         Math.pow(this.getPosition().getY() - dam.getY(), 2)))
                 .intValue();
         if (range <= this.attack.range()) {
-            new Damage(dam, this.attack.attaque());
+            new ObjectHitbox(new Rectangle(dam), this.attack.attaque());
         }
     }
 
