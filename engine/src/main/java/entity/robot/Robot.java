@@ -13,19 +13,20 @@ import java.awt.*;
  */
 public class Robot extends ObjectHitbox {
 
+    public static final int SPEED = 5;
+
     private int life;
     private int energy;
-    private int speed;
+
     private IAttack attack;
     private IMovement movement;
 
-    public Robot(int life, int energy, IAttack attack, IMovement movement, Rectangle hitbox, int speed) {
+    public Robot(int life, int energy, IAttack attack, IMovement movement, Rectangle hitbox) {
         super(hitbox, 0);
         this.life = life;
         this.energy = energy;
         this.attack = attack;
         this.movement = movement;
-        this.speed = speed;
     }
 
     /**
@@ -35,14 +36,14 @@ public class Robot extends ObjectHitbox {
     public void move() {
         Point point = this.movement.move(getPosition());
         if (point.getX() > hitBox.getX()) {
-            hitBox.x += speed;
+            hitBox.x += SPEED;
         } else if (point.getX() < hitBox.getX()) {
-            hitBox.x -= speed;
+            hitBox.x -= SPEED;
         }
         if (point.getY() > hitBox.getY()) {
-            hitBox.y -= speed;
+            hitBox.y -= SPEED;
         } else if (point.getY() < hitBox.getY()) {
-            hitBox.y += speed;
+            hitBox.y += SPEED;
         }
     }
 
@@ -92,13 +93,5 @@ public class Robot extends ObjectHitbox {
 
     public void setMovement(IMovement movement) {
         this.movement = movement;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
     }
 }
