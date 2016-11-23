@@ -32,6 +32,7 @@ public class ObjectHitbox {
         incrementNbTotal();
         this.type = type;
         this.hitBox = hitBox;
+        this.damage = damage;
     }
 
     public ObjectHitbox(Rectangle hitBox, int damage) {
@@ -39,6 +40,7 @@ public class ObjectHitbox {
         incrementNbTotal();
         this.type = Type.ObjectHitbox.name();
         this.hitBox = hitBox;
+        this.damage = damage;
     }
 
 

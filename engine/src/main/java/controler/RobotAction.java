@@ -5,7 +5,9 @@ import model.Model;
 import model.entity.ObjectHitbox;
 import model.entity.robot.Robot;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by JuIngong on 22/11/2016.
@@ -17,6 +19,8 @@ public class RobotAction implements Runnable {
 
     private HashMap<Direction, Boolean> directionBooleanHashMap;
 
+    private Point attackPoint;
+
     private Timer timer;
     private TimerTask timerTask = new TimerTask() {
         @Override
@@ -27,6 +31,9 @@ public class RobotAction implements Runnable {
                 if (directionBooleanHashMap.get(d)) {
                     moveRobot(d);
                 }
+            }
+            if (attackPoint != null){
+                attackRobot(attackPoint);
             }
 
         }
@@ -46,36 +53,36 @@ public class RobotAction implements Runnable {
 
     @Override
     public void run() {
+        Model model = Model.getModel();
         while (true) {
-            Direction direction = Direction.getDirection(robot.getMovement().move(robot.getPosition()));
+            Direction direction = Direction.getDirection(robot.getMovement().move(robot.getPosition(), model.listEnemy(robot)));
             if (direction != null && !Direction.NONE.equals(direction)) {
                 makeDirectionsCorect(direction);
+            }
+            Point dam = robot.getAttack().location(robot.getPosition(), model.listEnemy(robot));
+            if (dam != null) {
+                int range = new Double(Math.sqrt(Math.pow(robot.getPosition().getX() - dam.getX(), 2) + Math.pow(robot.getPosition().getY() - dam.getY(), 2))).intValue();
+                if (range <= robot.getAttack().range()) {
+                    attackPoint = dam;
+                }
+            } else {
+                attackPoint = null;
             }
         }
     }
 
     private void makeDirectionsCorect(Direction direction) {
-        if (direction.equals(Direction.EAST)) {
-            directionBooleanHashMap.put(direction, true);
-            directionBooleanHashMap.put(Direction.NORTH, false);
-            directionBooleanHashMap.put(Direction.SOUTH, false);
-            directionBooleanHashMap.put(Direction.WEST, false);
-        } else if (direction.equals(Direction.WEST)) {
-            directionBooleanHashMap.put(direction, true);
-            directionBooleanHashMap.put(Direction.NORTH, false);
-            directionBooleanHashMap.put(Direction.SOUTH, false);
-            directionBooleanHashMap.put(Direction.EAST, false);
-        } else if (direction.equals(Direction.NORTH)) {
-            directionBooleanHashMap.put(direction, true);
-            directionBooleanHashMap.put(Direction.EAST, false);
-            directionBooleanHashMap.put(Direction.SOUTH, false);
-            directionBooleanHashMap.put(Direction.WEST, false);
-        } else if (direction.equals(Direction.SOUTH)) {
-            directionBooleanHashMap.put(direction, true);
-            directionBooleanHashMap.put(Direction.NORTH, false);
-            directionBooleanHashMap.put(Direction.EAST, false);
-            directionBooleanHashMap.put(Direction.WEST, false);
-        }
+        directionBooleanHashMap.put(Direction.NORTH, false);
+        directionBooleanHashMap.put(Direction.SOUTH, false);
+        directionBooleanHashMap.put(Direction.WEST, false);
+        directionBooleanHashMap.put(Direction.EAST, false);
+        directionBooleanHashMap.put(direction, true);
+    }
+
+
+    private void attackRobot(Point point){
+        Model model = Model.getModel();
+        model.doDamage(robot, point);
     }
 
 

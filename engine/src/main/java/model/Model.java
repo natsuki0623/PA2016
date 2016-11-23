@@ -57,6 +57,25 @@ public class Model extends Observable {
     }
 
     /**
+     * Permet de mettre a jour la vue pour les degat.
+     *
+     * HashMap : "point"->Point
+     *                 "id"->int
+     */
+    public void updateDoDamage(ObjectHitbox objC){
+        HashMap<String, HashMap<String, Object>> send = new HashMap<>();
+        HashMap<String, Object> description = new HashMap<>();
+
+        description.put("point", objC.getDefaultPosition());
+        description.put("id",objC.getId());
+
+        send.put("damage", description);
+
+        setChanged();
+        notifyObservers(send);
+    }
+
+    /**
      * Permet de cacher un objet sur la vue
      *
      * HashMap :   "id"->int
@@ -71,6 +90,10 @@ public class Model extends Observable {
 
     // ------------------------------------------- Methodes
 
+
+    public void doDamage(Robot robot, Point point){
+        updateDoDamage(robot.attack(point));
+    }
 
     /**
      * Permet de bouger un robot dans une direction.
