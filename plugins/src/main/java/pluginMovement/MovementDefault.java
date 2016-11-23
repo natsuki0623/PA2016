@@ -6,7 +6,7 @@ import IPlugin.IMovement;
 
 public class MovementDefault implements IMovement{
 
-	public Point move(Point positionIni){
+	public String move(Point positionIni){
 		int x=(int) positionIni.getX();
 		int y=(int) positionIni.getY();
 		x++;
@@ -14,7 +14,7 @@ public class MovementDefault implements IMovement{
 			x=0;
 		}
 		Point positionFin=new Point(x,y);
-		return positionFin;
+		return positionFin.toString();
 	}
 	
 }

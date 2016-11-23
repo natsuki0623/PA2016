@@ -1,4 +1,4 @@
-package entity;
+package model.entity;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -16,6 +16,8 @@ public class ObjectHitbox {
      * Damage done by hitting another object
      */
     protected int damage;
+
+    protected String type;
     /**
      * Identifiant
      */
@@ -25,11 +27,20 @@ public class ObjectHitbox {
      */
     private static int nbTotalObjet = 0;
 
+    public ObjectHitbox(Rectangle hitBox, int damage, String type) {
+        id = nbTotalObjet;
+        incrementNbTotal();
+        this.type = type;
+        this.hitBox = hitBox;
+    }
+
     public ObjectHitbox(Rectangle hitBox, int damage) {
         id = nbTotalObjet;
         incrementNbTotal();
+        this.type = Type.ObjectHitbox.name();
         this.hitBox = hitBox;
     }
+
 
     /**
      * Méthode qui permet de savoir si un objet est touché par un
@@ -194,6 +205,26 @@ public class ObjectHitbox {
         Rectangle rect = new Rectangle(x, y, largeur, hauteur);
 
         return new ObjectHitbox(rect, damage);
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public enum Type{
+        Robot, Damage, ObjectHitbox;
     }
 
 }

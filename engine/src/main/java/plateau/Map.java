@@ -1,6 +1,6 @@
 package plateau;
 
-import entity.ObjectHitbox;
+import model.entity.ObjectHitbox;
 
 import java.util.ArrayList;
 import java.util.List;

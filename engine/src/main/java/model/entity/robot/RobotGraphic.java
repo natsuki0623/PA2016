@@ -1,4 +1,4 @@
-package entity.robot;
+package model.entity.robot;
 
 import IPlugin.IDrawing;
 

@@ -1,8 +1,8 @@
-package entity.robot;
+package model.entity.robot;
 
 import IPlugin.IAttack;
 import IPlugin.IMovement;
-import entity.ObjectHitbox;
+import model.entity.ObjectHitbox;
 
 import java.awt.*;
 
@@ -22,7 +22,7 @@ public class Robot extends ObjectHitbox {
     private IMovement movement;
 
     public Robot(int life, int energy, IAttack attack, IMovement movement, Rectangle hitbox) {
-        super(hitbox, 0);
+        super(hitbox, 0, Type.Robot.name());
         this.life = life;
         this.energy = energy;
         this.attack = attack;
@@ -58,7 +58,7 @@ public class Robot extends ObjectHitbox {
                         Math.pow(this.getPosition().getY() - dam.getY(), 2)))
                 .intValue();
         if (range <= this.attack.range()) {
-            new ObjectHitbox(new Rectangle(dam), this.attack.attaque());
+            new ObjectHitbox(new Rectangle(dam), this.attack.attaque(), Type.Damage.name());
         }
     }
 

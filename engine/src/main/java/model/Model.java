@@ -1,5 +1,7 @@
-import entity.ObjectHitbox;
-import entity.robot.Robot;
+package model;
+
+import model.entity.ObjectHitbox;
+import model.entity.robot.Robot;
 import plateau.Map;
 
 import java.awt.*;
@@ -73,7 +75,7 @@ public class Model extends Observable {
      * Permet de bouger un robot dans une direction.
      * @param robot
      */
-    public void moveRobot(Robot robot){
+    public void moveRobot(Robot robot, Direction direction){
         robot.move();
         updateMove(robot);
     }
