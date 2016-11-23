@@ -4,11 +4,15 @@ package IPlugin;
  * Interface permettant de gérer les plugins d'attaques
  */
 
+import com.sun.istack.internal.Nullable;
+
 import java.awt.*;
+import java.util.List;
 
 public interface IAttack {
 	public String toString();
 	public int attaque();
 	public int range();
-	public Point location(Point position);
+	@Nullable
+	public Point location(Point position, List<Point>positionEnemy);
 }

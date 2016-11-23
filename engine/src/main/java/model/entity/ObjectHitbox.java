@@ -179,7 +179,7 @@ public class ObjectHitbox {
 
 
     /**
-     * Permet de créer un objet collision avec un hashmap de description.
+     * Permet de créer un objet avec un hashmap de description.
      * <p>
      * le Hashmap: -> "x" -> int
      * "y" -> int
@@ -188,9 +188,9 @@ public class ObjectHitbox {
      * "damage" -> int
      *
      * @param descObj
-     * @return ObjetCollision
+     * @return ObjectHitbox
      */
-    public static ObjectHitbox createObjetCollision(HashMap<String, java.lang.Object> descObj) {
+    public static ObjectHitbox createObjecHitbox(HashMap<String, java.lang.Object> descObj) {
         if (descObj == null || descObj.isEmpty()) {
             return null;
         }

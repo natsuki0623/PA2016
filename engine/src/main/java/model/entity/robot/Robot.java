@@ -35,13 +35,13 @@ public class Robot extends ObjectHitbox {
      */
 
     public void move(Direction direction) {
-        if (direction.EAST.name()) {
+        if (Direction.EAST.equals(direction)) {
             hitBox.x += SPEED;
-        } else if (point.getX() < hitBox.getX()) {
+        } else if (Direction.WEST.equals(direction)) {
             hitBox.x -= SPEED;
-        else if (point.getY() > hitBox.getY()) {
+        } else if (Direction.SOUTH.equals(direction)) {
             hitBox.y -= SPEED;
-        } else if (point.getY() < hitBox.getY()) {
+        } else if (Direction.NORTH.equals(direction)) {
             hitBox.y += SPEED;
         }
     }
@@ -49,16 +49,8 @@ public class Robot extends ObjectHitbox {
     /**
      * Attaque en utilisant le plugin
      */
-    public void attack() {
-        Point dam = this.attack.location(getPosition());
-
-        int range = new Double(Math.sqrt(
-                Math.pow(this.getPosition().getX() - dam.getX(), 2) +
-                        Math.pow(this.getPosition().getY() - dam.getY(), 2)))
-                .intValue();
-        if (range <= this.attack.range()) {
-            new ObjectHitbox(new Rectangle(dam), this.attack.attaque(), Type.Damage.name());
-        }
+    public void attack(Point position) {
+        new ObjectHitbox(new Rectangle(position), this.attack.attaque(), Type.Damage.name());
     }
 
 

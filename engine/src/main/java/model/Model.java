@@ -7,6 +7,7 @@ import model.plateau.Map;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JuIngong on 22/11/2016.
@@ -25,7 +26,7 @@ public class Model extends Observable {
         listReset = new HashMap<>();
     }
 
-    public static Model creerMoteur( Map map){
+    public static Model creerModel( Map map){
         model = new Model(map);
         return model;
     }
@@ -80,6 +81,18 @@ public class Model extends Observable {
         updateMove(robot);
     }
 
+    /**
+     * Permet de recupérer les position des enemi
+     * a un robot present sur la carte
+     *
+     * @param self Robot demandant
+     * @return List des position des robot sauf celui demandant
+     */
+    public List<Point> listEnemy(Robot self){
+        return map.getEnemy(self).stream()
+                .map(enemy -> enemy.getPosition())
+                .collect(Collectors.toList());
+    }
 
     /**
      * Retourne une liste des objets qui seront en collision avec l'objet si
