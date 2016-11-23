@@ -94,6 +94,6 @@ public class MovementEscape implements IMovement{
 		
 		return "NONE";
 	}
-	}
-
 }
+
+
