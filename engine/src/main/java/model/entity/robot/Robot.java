@@ -2,6 +2,7 @@ package model.entity.robot;
 
 import IPlugin.IAttack;
 import IPlugin.IMovement;
+import model.Direction;
 import model.entity.ObjectHitbox;
 
 import java.awt.*;
@@ -33,14 +34,12 @@ public class Robot extends ObjectHitbox {
      * Deplacement en utilisant le plugin
      */
 
-    public void move() {
-        Point point = this.movement.move(getPosition());
-        if (point.getX() > hitBox.getX()) {
+    public void move(Direction direction) {
+        if (direction.EAST.name()) {
             hitBox.x += SPEED;
         } else if (point.getX() < hitBox.getX()) {
             hitBox.x -= SPEED;
-        }
-        if (point.getY() > hitBox.getY()) {
+        else if (point.getY() > hitBox.getY()) {
             hitBox.y -= SPEED;
         } else if (point.getY() < hitBox.getY()) {
             hitBox.y += SPEED;

@@ -2,7 +2,7 @@ package model;
 
 import model.entity.ObjectHitbox;
 import model.entity.robot.Robot;
-import plateau.Map;
+import model.plateau.Map;
 
 import java.awt.*;
 import java.util.*;
@@ -76,7 +76,7 @@ public class Model extends Observable {
      * @param robot
      */
     public void moveRobot(Robot robot, Direction direction){
-        robot.move();
+        robot.move(direction);
         updateMove(robot);
     }
 

@@ -1,4 +1,4 @@
-package plateau;
+package model.plateau;
 
 import java.awt.Color;
 import java.awt.GridLayout;
