@@ -56,8 +56,9 @@ public class RobotAction implements Runnable {
         Model model = Model.getModel();
         while (true) {
             Direction direction = Direction.getDirection(robot.getMovement().move(robot.getPosition(), model.listEnemy(robot)));
+            resetDirection();
             if (direction != null && !Direction.NONE.equals(direction)) {
-                makeDirectionsCorect(direction);
+                directionBooleanHashMap.put(direction, true);
             }
             Point dam = robot.getAttack().location(robot.getPosition(), model.listEnemy(robot));
             if (dam != null) {
@@ -71,21 +72,29 @@ public class RobotAction implements Runnable {
         }
     }
 
-    private void makeDirectionsCorect(Direction direction) {
+    /**
+     * Reinitialise direction HashMap
+     */
+    private void resetDirection() {
         directionBooleanHashMap.put(Direction.NORTH, false);
         directionBooleanHashMap.put(Direction.SOUTH, false);
         directionBooleanHashMap.put(Direction.WEST, false);
         directionBooleanHashMap.put(Direction.EAST, false);
-        directionBooleanHashMap.put(direction, true);
     }
 
-
+    /**
+     *
+     * @param point
+     */
     private void attackRobot(Point point){
         Model model = Model.getModel();
         model.doDamage(robot, point);
     }
 
-
+    /**
+     *
+     * @param direction
+     */
     private void moveRobot(Direction direction) {
         Model model = Model.getModel();
         List<ObjectHitbox> listObj = model.listObjHitbox(robot, direction);
