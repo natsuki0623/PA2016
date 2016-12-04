@@ -1,24 +1,22 @@
-package plugin;
+package pluginAttack;
 
 import java.awt.Point;
 import java.util.List;
 
 import IPlugin.IAttack;
 
-public class AttackCac implements IAttack{
+public class AttackRange implements IAttack {
 
+	@Override
 	public int attaque() {
-		
+		// TODO Auto-generated method stub
 		return 70;
 	}
 
+	@Override
 	public int range() {
-		return 1;
-	}
-
-	public Point location(Point position) {
 		// TODO Auto-generated method stub
-		return null;
+		return 100;
 	}
 
 	@Override
