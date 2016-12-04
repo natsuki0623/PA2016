@@ -5,20 +5,18 @@ import java.util.List;
 
 import IPlugin.IAttack;
 
-public class AttackCac implements IAttack{
+public class AttackRange implements IAttack {
 
+	@Override
 	public int attaque() {
-		
+		// TODO Auto-generated method stub
 		return 70;
 	}
 
+	@Override
 	public int range() {
-		return 10;
-	}
-
-	public Point location(Point position) {
 		// TODO Auto-generated method stub
-		return null;
+		return 100;
 	}
 
 	@Override
