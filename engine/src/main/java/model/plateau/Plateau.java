@@ -16,17 +16,16 @@ public class Plateau {
 		JFrame t = new JFrame();
 		
 		t.setSize(1000, 1000);
-		JPanel pan = new JPanel(new GridLayout(10, 10));
+		JPanel pan = new JPanel();
 		Border blackline = BorderFactory.createLineBorder(Color.black, 1);
-		for (int i = 0; i < 100; i++) {
-			JPanel ptest = new JPanel();
-			ptest.setBorder(blackline);
-			pan.add(ptest);
-		}
 		pan.setBorder(blackline);
 		t.add(pan);
 		t.setVisible(true);
 		t.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		Plateau p1 = new Plateau();
 	}
 	
 }
