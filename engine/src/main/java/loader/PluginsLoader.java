@@ -653,10 +653,14 @@ public class PluginsLoader {
 		JFileChooser fc = new JFileChooser();
 		fc.showOpenDialog(null);
 		File file1 = fc.getSelectedFile();
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		System.out.println(file1.getAbsolutePath());
+		String[] cheminRep = file1.getAbsolutePath().split("target");
+		System.out.println(cheminRep[0].toString());
+		File file2 = new File(cheminRep[0]);
 		
 		PluginsLoader pl = new PluginsLoader();
-		pl.init(file1);
+		pl.init(file2);
 		System.out.println(pl.getPlugins());
 	}
 }
