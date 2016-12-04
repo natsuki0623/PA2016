@@ -3,7 +3,7 @@ package IPlugin;
 import java.awt.Point;
 import java.util.List;
 
-public interface IMovement {
+public interface IMovement extends IPlugin{
 
 	/**
 	 *

@@ -9,7 +9,7 @@ import com.sun.istack.internal.Nullable;
 import java.awt.*;
 import java.util.List;
 
-public interface IAttack {
+public interface IAttack extends IPlugin{
 	public String toString();
 	public int attaque();
 	public int range();
