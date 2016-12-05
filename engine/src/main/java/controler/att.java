@@ -4,6 +4,7 @@ import IPlugin.IAttack;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by JuIngong on 05/12/2016.
@@ -11,21 +12,21 @@ import java.util.*;
 public class att implements IAttack {
     @Override
     public int attaque() {
-        return 0;
+        return 50;
     }
 
     @Override
     public int range() {
-        return 0;
+        return 1000;
     }
 
     @Override
     public int energy() {
-        return 0;
+        return 10;
     }
 
     @Override
     public Point location(Point position, java.util.List<Point> positionEnemy) {
-        return null;
+        return positionEnemy.get(0);
     }
 }

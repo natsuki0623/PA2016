@@ -223,7 +223,7 @@ public class ObjectHitbox {
     }
 
     public enum Type{
-        Robot, Damage, ObjectHitbox;
+        Robot, ObjectHitbox;
     }
 
 }

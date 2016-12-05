@@ -55,13 +55,6 @@ public class Robot extends ObjectHitbox {
         }
     }
 
-    /**
-     * Attaque en utilisant le plugin
-     */
-    public ObjectHitbox attack(Point position) {
-        return new ObjectHitbox(new Rectangle(position), this.attack.attaque(), Type.Damage.name());
-    }
-
 
     public int getLife() {
         return life;

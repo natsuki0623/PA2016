@@ -63,13 +63,8 @@ public class Model extends Observable {
      *                 "id"->int
      */
     public void updateDoDamage(ObjectHitbox objC){
-        HashMap<String, HashMap<String, Object>> send = new HashMap<>();
-        HashMap<String, Object> description = new HashMap<>();
-
-        description.put("point", objC.getDefaultPosition());
-        description.put("id",objC.getId());
-
-        send.put("damage", description);
+        HashMap<String, Integer> send = new HashMap<>();
+        send.put("damage", objC.getId());
 
         setChanged();
         notifyObservers(send);
@@ -92,11 +87,13 @@ public class Model extends Observable {
 
 
     public void doDamage(Robot robot, Point point){
-        ObjectHitbox dmg = robot.attack(point);
-        List<ObjectHitbox> list = getMap().isInContact(dmg);
-        if(!list.isEmpty()) {
-            updateDoDamage(list.get(0));
+        for(Robot r : getMap().getEnemy(robot)){
+          if(r.isTouch(point)){
+              r.setLife(r.getLife()-robot.getAttack().attaque());
+              updateDoDamage(r);
+          }
         }
+
     }
 
     /**
@@ -149,14 +146,8 @@ public class Model extends Observable {
         else if(Direction.WEST.equals(direction)){
             hitBox.setLocation(hitBox.x - vit, hitBox.y);
         }
-        System.out.println(hitBox.getX() + " " + hitBox.getY());
-        List<ObjectHitbox> listObj =  getMap().isInContact(hitBox, objectHitbox);
 
-        //objectHitbox.setHitBox(hitBoxObj);
-
-        if(!listObj.isEmpty())System.out.println(objectHitbox.getId()+ " ! " + listObj.get(0).getId() +  listObj.get(0).getPosition().toString());
-
-        return listObj;
+        return getMap().isInContact(hitBox, objectHitbox);
     }
 
     /**
