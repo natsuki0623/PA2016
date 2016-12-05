@@ -21,7 +21,6 @@ public class AttackPeaceful implements IAttack{
 
 	@Override
 	public Point location(Point position, List<Point> positionEnemy) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
