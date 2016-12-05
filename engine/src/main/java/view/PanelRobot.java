@@ -4,7 +4,6 @@ import IPlugin.IDrawing;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 /**
  * Created by JuIngong on 05/12/2016.

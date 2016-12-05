@@ -15,7 +15,7 @@ import java.awt.*;
  */
 public class Robot extends ObjectHitbox {
 
-    public static final int SPEED = 1;
+    public static final int SPEED = 10;
 
     private int life;
     private int energy;
@@ -25,7 +25,7 @@ public class Robot extends ObjectHitbox {
     private IDrawing drawing;
 
     public Robot(int life, int energy, IAttack attack, IMovement movement, Rectangle hitbox, IDrawing drawing) {
-        super(hitbox, 0, Type.Robot.name());
+        super(hitbox, Type.Robot.name());
         this.life = life;
         this.energy = energy;
         this.attack = attack;
@@ -34,7 +34,7 @@ public class Robot extends ObjectHitbox {
     }
 
     public Robot(int life, int energy, Rectangle hitbox) {
-        super(hitbox, 0, Type.Robot.name());
+        super(hitbox, Type.Robot.name());
         this.life = life;
         this.energy = energy;
     }

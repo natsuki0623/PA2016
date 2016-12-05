@@ -1,5 +1,8 @@
 package model.entity;
 
+import model.entity.robot.*;
+import model.entity.robot.Robot;
+
 import java.awt.*;
 import java.util.HashMap;
 
@@ -12,10 +15,6 @@ public class ObjectHitbox {
      */
     protected Rectangle hitBox;
 
-    /**
-     * Damage done by hitting another object
-     */
-    protected int damage;
 
     protected String type;
     /**
@@ -27,20 +26,18 @@ public class ObjectHitbox {
      */
     private static int objectTotalNb = 0;
 
-    public ObjectHitbox(Rectangle hitBox, int damage, String type) {
+    public ObjectHitbox(Rectangle hitBox, String type) {
         id = objectTotalNb;
         incrementNbTotal();
         this.type = type;
         this.hitBox = hitBox;
-        this.damage = damage;
     }
 
-    public ObjectHitbox(Rectangle hitBox, int damage) {
+    public ObjectHitbox(Rectangle hitBox) {
         id = objectTotalNb;
         incrementNbTotal();
         this.type = Type.ObjectHitbox.name();
         this.hitBox = hitBox;
-        this.damage = damage;
     }
 
 
@@ -194,25 +191,19 @@ public class ObjectHitbox {
             return null;
         }
 
+        String type = (String) descObj.get("type");
         int x = 0, y = 0, largeur = 0, hauteur = 0, damage = 0;
         if (descObj.containsKey("x")) x = (int) descObj.get("x");
         if (descObj.containsKey("y")) y = (int) descObj.get("y");
         if (descObj.containsKey("largeur")) largeur = (int) descObj.get("largeur");
         if (descObj.containsKey("hauteur")) hauteur = (int) descObj.get("hauteur");
-        if (descObj.containsKey("damage")) hauteur = (int) descObj.get("damage");
 
         Rectangle rect = new Rectangle(x, y, largeur, hauteur);
+        if (Type.Robot.name().equals(type)) return new Robot(100, 100, rect);
 
-        return new ObjectHitbox(rect, damage);
+        return new ObjectHitbox(rect);
     }
 
-    public int getDamage() {
-        return damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
 
     public String getType() {
         return type;
@@ -222,7 +213,7 @@ public class ObjectHitbox {
         this.type = type;
     }
 
-    public enum Type{
+    public enum Type {
         Robot, ObjectHitbox;
     }
 

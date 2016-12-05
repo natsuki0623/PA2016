@@ -26,9 +26,9 @@ public class ObjectHitboxTest {
         r2 = new Rectangle(new Point(30,20),new Dimension(10,10));
         r3 = new Rectangle(new Point(15,15),new Dimension(20,10));
 
-        o1 = new ObjectHitbox(r1, 0);
-        o2 = new ObjectHitbox(r2, 0);
-        o3 = new ObjectHitbox(r3, 0);
+        o1 = new ObjectHitbox(r1);
+        o2 = new ObjectHitbox(r2);
+        o3 = new ObjectHitbox(r3);
     }
 
     @Test
@@ -58,11 +58,11 @@ public class ObjectHitboxTest {
     @Test
     public void getNbTotal(){
         assertEquals(3,o1.getObjectTotalNb());
-        ObjectHitbox o1 = new ObjectHitbox(r1,0);
+        ObjectHitbox o1 = new ObjectHitbox(r1);
         assertEquals(4,o1.getObjectTotalNb());
-        ObjectHitbox o2 = new ObjectHitbox(r2,0);
+        ObjectHitbox o2 = new ObjectHitbox(r2);
         assertEquals(5,o1.getObjectTotalNb());
-        ObjectHitbox o3 = new ObjectHitbox(r3,0);
+        ObjectHitbox o3 = new ObjectHitbox(r3);
         assertEquals(6,o1.getObjectTotalNb());
         o1.remove();
         assertEquals(5,o1.getObjectTotalNb());

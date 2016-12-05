@@ -3,7 +3,6 @@ package controler;
 import IPlugin.IDrawing;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * Created by JuIngong on 05/12/2016.
