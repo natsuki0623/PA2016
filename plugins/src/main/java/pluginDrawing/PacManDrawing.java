@@ -4,11 +4,11 @@ import java.awt.Graphics;
 
 import IPlugin.IDrawing;
 
-public class DefaultDrawing implements IDrawing{
+public class PacManDrawing implements IDrawing{
 
 	public void draw(Graphics g) {
-		g.setColor(Color.red);
-		g.fillRect(0, 0, 50, 50);
+		g.setColor(Color.yellow);
+		g.fillArc(0,0,150,150,30,300);
 	}
 
 }
