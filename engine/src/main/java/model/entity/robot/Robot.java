@@ -1,6 +1,7 @@
 package model.entity.robot;
 
 import IPlugin.IAttack;
+import IPlugin.IDrawing;
 import IPlugin.IMovement;
 import model.Direction;
 import model.entity.ObjectHitbox;
@@ -21,13 +22,21 @@ public class Robot extends ObjectHitbox {
 
     private IAttack attack;
     private IMovement movement;
+    private IDrawing drawing;
 
-    public Robot(int life, int energy, IAttack attack, IMovement movement, Rectangle hitbox) {
+    public Robot(int life, int energy, IAttack attack, IMovement movement, Rectangle hitbox, IDrawing drawing) {
         super(hitbox, 0, Type.Robot.name());
         this.life = life;
         this.energy = energy;
         this.attack = attack;
         this.movement = movement;
+        this.drawing = drawing;
+    }
+
+    public Robot(int life, int energy, Rectangle hitbox) {
+        super(hitbox, 0, Type.Robot.name());
+        this.life = life;
+        this.energy = energy;
     }
 
     /**
@@ -84,5 +93,13 @@ public class Robot extends ObjectHitbox {
 
     public void setMovement(IMovement movement) {
         this.movement = movement;
+    }
+
+    public IDrawing getDrawing() {
+        return drawing;
+    }
+
+    public void setDrawing(IDrawing drawing) {
+        this.drawing = drawing;
     }
 }

@@ -25,10 +25,10 @@ public class ObjectHitbox {
     /**
      * Nombre total d'objet
      */
-    private static int nbTotalObjet = 0;
+    private static int ObjectTotalNb = 0;
 
     public ObjectHitbox(Rectangle hitBox, int damage, String type) {
-        id = nbTotalObjet;
+        id = ObjectTotalNb;
         incrementNbTotal();
         this.type = type;
         this.hitBox = hitBox;
@@ -36,7 +36,7 @@ public class ObjectHitbox {
     }
 
     public ObjectHitbox(Rectangle hitBox, int damage) {
-        id = nbTotalObjet;
+        id = ObjectTotalNb;
         incrementNbTotal();
         this.type = Type.ObjectHitbox.name();
         this.hitBox = hitBox;
@@ -107,12 +107,12 @@ public class ObjectHitbox {
      *
      * @return
      */
-    public static int getNbTotalObjet() {
-        return nbTotalObjet;
+    public static int getObjectTotalNb() {
+        return ObjectTotalNb;
     }
 
-    public static void setNbTotalObjet(int aNbTotalObjet) {
-        nbTotalObjet = aNbTotalObjet;
+    public static void setObjectTotalNb(int aNbTotalObjet) {
+        ObjectTotalNb = aNbTotalObjet;
     }
 
     /**
@@ -163,7 +163,7 @@ public class ObjectHitbox {
      * vers cette objet
      */
     public void supprimer() {
-        nbTotalObjet--;
+        ObjectTotalNb--;
         hitBox = null;
         id = 0;
     }
@@ -176,7 +176,7 @@ public class ObjectHitbox {
      * Augmente le nombre maximal d'objet
      */
     private void incrementNbTotal() {
-        nbTotalObjet++;
+        ObjectTotalNb++;
     }
 
 

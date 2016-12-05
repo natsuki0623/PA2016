@@ -57,19 +57,19 @@ public class ObjectHitboxTest {
 
     @Test
     public void getNbTotal(){
-        assertEquals(3,o1.getNbTotalObjet());
+        assertEquals(3,o1.getObjectTotalNb());
         ObjectHitbox o1 = new ObjectHitbox(r1,0);
-        assertEquals(4,o1.getNbTotalObjet());
+        assertEquals(4,o1.getObjectTotalNb());
         ObjectHitbox o2 = new ObjectHitbox(r2,0);
-        assertEquals(5,o1.getNbTotalObjet());
+        assertEquals(5,o1.getObjectTotalNb());
         ObjectHitbox o3 = new ObjectHitbox(r3,0);
-        assertEquals(6,o1.getNbTotalObjet());
+        assertEquals(6,o1.getObjectTotalNb());
         o1.supprimer();
-        assertEquals(5,o1.getNbTotalObjet());
+        assertEquals(5,o1.getObjectTotalNb());
         o2.supprimer();
-        assertEquals(4,o1.getNbTotalObjet());
+        assertEquals(4,o1.getObjectTotalNb());
         o3.supprimer();
-        assertEquals(3,o1.getNbTotalObjet());
+        assertEquals(3,o1.getObjectTotalNb());
     }
 
     @Test

@@ -26,7 +26,7 @@ public class Model extends Observable {
         listReset = new HashMap<>();
     }
 
-    public static Model creerModel( Map map){
+    public static Model createModel( Map map){
         model = new Model(map);
         return model;
     }
@@ -50,7 +50,7 @@ public class Model extends Observable {
         description.put("point", objC.getDefaultPosition());
         description.put("id",objC.getId());
 
-        send.put("deplacer", description);
+        send.put("move", description);
 
         setChanged();
         notifyObservers(send);
@@ -82,7 +82,7 @@ public class Model extends Observable {
      */
     private void updateHide(ObjectHitbox objC) {
         HashMap<String, Integer> send = new HashMap<>();
-        send.put("cacher", objC.getId());
+        send.put("hide", objC.getId());
 
         setChanged();
         notifyObservers(send);
@@ -92,7 +92,11 @@ public class Model extends Observable {
 
 
     public void doDamage(Robot robot, Point point){
-        updateDoDamage(robot.attack(point));
+        ObjectHitbox dmg = robot.attack(point);
+        List<ObjectHitbox> list = getMap().isInContact(dmg);
+        if(!list.isEmpty()) {
+            updateDoDamage(list.get(0));
+        }
     }
 
     /**
