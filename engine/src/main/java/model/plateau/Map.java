@@ -4,6 +4,7 @@ import model.Direction;
 import model.entity.ObjectHitbox;
 import model.entity.robot.Robot;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,25 @@ public class Map {
         for (int i = 0; i < objectHitboxes.size(); i++) {
             ObjectHitbox objB = objectHitboxes.get(i);
             if (objA != objB && objB.isTouch(objA.getHitBox())) {
+                listObj.add(objB);
+            }
+        }
+        return listObj;
+    }
+
+    /**
+     * Permet de savoir si "hitbox" est en collision
+     * avec un des objet de la map.
+     *
+     * @param hitbox celle qu'on veux tester parmis les autres objets
+     * @param obj objet ignoré
+     * @return true si il est en collision
+     */
+    public List<ObjectHitbox> isInContact(Rectangle hitbox, ObjectHitbox obj) {
+        List<ObjectHitbox> listObj = new ArrayList<>();
+        for (int i = 0; i < objectHitboxes.size(); i++) {
+            ObjectHitbox objB = objectHitboxes.get(i);
+            if (objB != obj && objB.isTouch(hitbox)) {
                 listObj.add(objB);
             }
         }

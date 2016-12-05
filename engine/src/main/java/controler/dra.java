@@ -11,10 +11,6 @@ import java.util.Random;
 public class dra implements IDrawing {
     @Override
     public void draw(Graphics g) {
-        Random rand = new Random();
-        float r = rand.nextFloat();
-        float v = rand.nextFloat();
-        float b = rand.nextFloat();
-        g.setColor(new Color(r, v, b));
+        g.setColor(Color.blue);
     }
 }

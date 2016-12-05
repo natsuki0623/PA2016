@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * Created by JuIngong on 22/11/2016.
  */
-public class RobotAction implements Runnable {
-    private static final long TIME = 15;
+public class RobotAction {
+    private static final long TIME = 10;
 
     private Robot robot;
 
@@ -25,9 +25,22 @@ public class RobotAction implements Runnable {
     private TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
-            Iterator<Direction> i = directionBooleanHashMap.keySet().iterator();
-            while (i.hasNext()) {
-                Direction d = i.next();
+            Model model = Model.getModel();
+            Direction direction = Direction.getDirection(robot.getMovement().move(robot.getPosition(), model.listEnemy(robot)));
+            resetDirection();
+            if (direction != null && !Direction.NONE.equals(direction)) {
+                directionBooleanHashMap.put(direction, true);
+            }
+            Point dam = robot.getAttack().location(robot.getPosition(), model.listEnemy(robot));
+            if (dam != null) {
+                int range = new Double(Math.sqrt(Math.pow(robot.getPosition().getX() - dam.getX(), 2) + Math.pow(robot.getPosition().getY() - dam.getY(), 2))).intValue();
+                if (range <= robot.getAttack().range()) {
+                    attackPoint = dam;
+                }
+            } else {
+                attackPoint = null;
+            }
+            for (Direction d : directionBooleanHashMap.keySet()) {
                 if (directionBooleanHashMap.get(d)) {
                     moveRobot(d);
                 }
@@ -51,26 +64,7 @@ public class RobotAction implements Runnable {
         timer.schedule(timerTask, 0, TIME);
     }
 
-    @Override
-    public void run() {
-        Model model = Model.getModel();
-        while (true) {
-            Direction direction = Direction.getDirection(robot.getMovement().move(robot.getPosition(), model.listEnemy(robot)));
-            resetDirection();
-            if (direction != null && !Direction.NONE.equals(direction)) {
-                directionBooleanHashMap.put(direction, true);
-            }
-            Point dam = robot.getAttack().location(robot.getPosition(), model.listEnemy(robot));
-            if (dam != null) {
-                int range = new Double(Math.sqrt(Math.pow(robot.getPosition().getX() - dam.getX(), 2) + Math.pow(robot.getPosition().getY() - dam.getY(), 2))).intValue();
-                if (range <= robot.getAttack().range()) {
-                    attackPoint = dam;
-                }
-            } else {
-                attackPoint = null;
-            }
-        }
-    }
+
 
     /**
      * Reinitialise direction HashMap
@@ -97,9 +91,12 @@ public class RobotAction implements Runnable {
      */
     private void moveRobot(Direction direction) {
         Model model = Model.getModel();
+        System.out.println(robot.getId() + " " + robot.getPosition());
         List<ObjectHitbox> listObj = model.listObjHitbox(robot, direction);
+        System.out.println(robot.getId() + " " + robot.getPosition());
         if (listObj.isEmpty()) {
             model.moveRobot(robot, direction);
+            System.out.println("Deplacement " + robot.getId() + "  " + robot.getPosition());
         } else {
             for (ObjectHitbox objC : listObj) {
                 robotInContact(objC);
@@ -120,4 +117,7 @@ public class RobotAction implements Runnable {
         timer.cancel();
     }
 
+    public Robot getRobot() {
+        return robot;
+    }
 }

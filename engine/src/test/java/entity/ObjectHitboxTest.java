@@ -64,11 +64,11 @@ public class ObjectHitboxTest {
         assertEquals(5,o1.getObjectTotalNb());
         ObjectHitbox o3 = new ObjectHitbox(r3,0);
         assertEquals(6,o1.getObjectTotalNb());
-        o1.supprimer();
+        o1.remove();
         assertEquals(5,o1.getObjectTotalNb());
-        o2.supprimer();
+        o2.remove();
         assertEquals(4,o1.getObjectTotalNb());
-        o3.supprimer();
+        o3.remove();
         assertEquals(3,o1.getObjectTotalNb());
     }
 
@@ -85,9 +85,9 @@ public class ObjectHitboxTest {
 
     @After
     public void delete(){
-        o1.supprimer();
-        o2.supprimer();
-        o3.supprimer();
+        o1.remove();
+        o2.remove();
+        o3.remove();
     }
 
 }

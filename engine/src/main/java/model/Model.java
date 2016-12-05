@@ -135,8 +135,8 @@ public class Model extends Observable {
 
         int vit = Robot.SPEED;
         Rectangle hitBoxObj =  objectHitbox.getHitBox();
-        Rectangle hitBox = new Rectangle(hitBoxObj.x, hitBoxObj.y + hitBoxObj.height/2,
-                hitBoxObj.width, hitBoxObj.height/2);
+        Rectangle hitBox = new Rectangle(hitBoxObj.x, hitBoxObj.y,
+                hitBoxObj.width, hitBoxObj.height);
         if(Direction.NORTH.equals(direction)){
             hitBox.setLocation(hitBox.x, hitBox.y - vit);
         }
@@ -149,11 +149,12 @@ public class Model extends Observable {
         else if(Direction.WEST.equals(direction)){
             hitBox.setLocation(hitBox.x - vit, hitBox.y);
         }
+        System.out.println(hitBox.getX() + " " + hitBox.getY());
+        List<ObjectHitbox> listObj =  getMap().isInContact(hitBox, objectHitbox);
 
-        objectHitbox.setHitBox(hitBox);
-        List<ObjectHitbox> listObj =  getMap().isInContact(objectHitbox);
+        //objectHitbox.setHitBox(hitBoxObj);
 
-        objectHitbox.setHitBox(hitBoxObj);
+        if(!listObj.isEmpty())System.out.println(objectHitbox.getId()+ " ! " + listObj.get(0).getId() +  listObj.get(0).getPosition().toString());
 
         return listObj;
     }
@@ -162,10 +163,8 @@ public class Model extends Observable {
      * Permet de reset le jeu
      */
     public void reset(){
-        Iterator<ObjectHitbox> i = listReset.keySet().iterator();
 
-        while(i.hasNext()){
-            ObjectHitbox obj = i.next();
+        for (ObjectHitbox obj : listReset.keySet()) {
             resetObjetCollision(obj);
         }
 

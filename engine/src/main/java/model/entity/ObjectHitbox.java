@@ -25,10 +25,10 @@ public class ObjectHitbox {
     /**
      * Nombre total d'objet
      */
-    private static int ObjectTotalNb = 0;
+    private static int objectTotalNb = 0;
 
     public ObjectHitbox(Rectangle hitBox, int damage, String type) {
-        id = ObjectTotalNb;
+        id = objectTotalNb;
         incrementNbTotal();
         this.type = type;
         this.hitBox = hitBox;
@@ -36,7 +36,7 @@ public class ObjectHitbox {
     }
 
     public ObjectHitbox(Rectangle hitBox, int damage) {
-        id = ObjectTotalNb;
+        id = objectTotalNb;
         incrementNbTotal();
         this.type = Type.ObjectHitbox.name();
         this.hitBox = hitBox;
@@ -108,16 +108,15 @@ public class ObjectHitbox {
      * @return
      */
     public static int getObjectTotalNb() {
-        return ObjectTotalNb;
+        return objectTotalNb;
     }
 
-    public static void setObjectTotalNb(int aNbTotalObjet) {
-        ObjectTotalNb = aNbTotalObjet;
+    public static void setObjectTotalNb(int nbObjectTotal) {
+        objectTotalNb = nbObjectTotal;
     }
 
     /**
      * Déplacement de la position de la hitBox
-     * donc de la position du joueur, ennemis ou objet
      *
      * @param op
      */
@@ -145,8 +144,6 @@ public class ObjectHitbox {
             diffY = (int) ((int) (p1.getY() - op.getY()) + (hitBox.getWidth() / 2));
             hitBox.setRect(p1.getX(), p1.getY() - diffY, hitBox.getWidth(), hitBox.getHeight());
         }
-
-
     }
 
     /**
@@ -162,8 +159,8 @@ public class ObjectHitbox {
      * Obligatoire avant de mettre à supprimer toutes les références
      * vers cette objet
      */
-    public void supprimer() {
-        ObjectTotalNb--;
+    public void remove() {
+        objectTotalNb--;
         hitBox = null;
         id = 0;
     }
@@ -176,7 +173,7 @@ public class ObjectHitbox {
      * Augmente le nombre maximal d'objet
      */
     private void incrementNbTotal() {
-        ObjectTotalNb++;
+        objectTotalNb++;
     }
 
 

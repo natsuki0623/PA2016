@@ -20,6 +20,11 @@ public class att implements IAttack {
     }
 
     @Override
+    public int energy() {
+        return 0;
+    }
+
+    @Override
     public Point location(Point position, java.util.List<Point> positionEnemy) {
         return null;
     }

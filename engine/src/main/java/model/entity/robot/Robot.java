@@ -15,7 +15,7 @@ import java.awt.*;
  */
 public class Robot extends ObjectHitbox {
 
-    public static final int SPEED = 5;
+    public static final int SPEED = 1;
 
     private int life;
     private int energy;
@@ -48,9 +48,9 @@ public class Robot extends ObjectHitbox {
             hitBox.x += SPEED;
         } else if (Direction.WEST.equals(direction)) {
             hitBox.x -= SPEED;
-        } else if (Direction.SOUTH.equals(direction)) {
-            hitBox.y -= SPEED;
         } else if (Direction.NORTH.equals(direction)) {
+            hitBox.y -= SPEED;
+        } else if (Direction.SOUTH.equals(direction)) {
             hitBox.y += SPEED;
         }
     }
