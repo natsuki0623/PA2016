@@ -51,7 +51,7 @@ public class Controler {
         }
         initFrame();
         mapView =  new MapView(toListPanel(objectHitboxes));
-        Model.createModel(new Map(objectHitboxes));
+        Model.createModel(new Map(objectHitboxes), robotActions);
         for (ObjectHitbox o : objectHitboxes) {
             if (o.getType().equals(ObjectHitbox.Type.Robot.name())) {
                 robotActions.add(new RobotAction((Robot) o));
@@ -78,12 +78,13 @@ public class Controler {
         Map map = new Map(objectHitboxes);
         initFrame();
         mapView = new MapView(toListPanel(objectHitboxes));
-        Model.createModel(map);
+
         for (ObjectHitbox o : objectHitboxes) {
             if (o.getType().equals(ObjectHitbox.Type.Robot.name())) {
                 robotActions.add(new RobotAction((Robot) o));
             }
         }
+        Model.createModel(map, robotActions);
         Model model = Model.getModel();
         frame.setContentPane(mapView);
         model.addObserver(mapView);

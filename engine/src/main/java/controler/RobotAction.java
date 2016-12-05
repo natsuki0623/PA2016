@@ -33,7 +33,6 @@ public class RobotAction {
                 int range = (int) Math.sqrt(Math.pow(robot.getPosition().getX() - dam.getX(), 2) + Math.pow(robot.getPosition().getY() - dam.getY(), 2));
                 if (range <= robot.getAttack().range()) {
                     attackRobot(dam);
-                    System.out.println(robot.getLife());
                 }
             }
         }

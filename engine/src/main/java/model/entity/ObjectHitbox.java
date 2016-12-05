@@ -157,7 +157,7 @@ public class ObjectHitbox {
      * vers cette objet
      */
     public void remove() {
-        objectTotalNb--;
+        //objectTotalNb--;
         hitBox = null;
         id = 0;
     }

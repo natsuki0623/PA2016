@@ -1,5 +1,6 @@
 package model;
 
+import controler.RobotAction;
 import model.entity.ObjectHitbox;
 import model.entity.robot.Robot;
 import model.plateau.Map;
@@ -17,17 +18,20 @@ public class Model extends Observable {
     private static Model model = null;
     private Map map;
 
+    private List<RobotAction> robotActions;
+
     //RESET
     private HashMap<ObjectHitbox, Point> listReset;
 
     // ------------------------------------------- Singleton
-    private Model(Map map) {
+    private Model(Map map, List<RobotAction> robotAction) {
         this.map = map;
+        this.robotActions = robotAction;
         listReset = new HashMap<>();
     }
 
-    public static Model createModel( Map map){
-        model = new Model(map);
+    public static Model createModel( Map map, List<RobotAction> robotAction){
+        model = new Model(map,robotAction);
         return model;
     }
 
@@ -88,9 +92,21 @@ public class Model extends Observable {
 
     public void doDamage(Robot robot, Point point){
         for(Robot r : getMap().getEnemy(robot)){
+            System.out.println(r.toString());
           if(r.isTouch(point)){
+              System.out.println(r.getId() + " " + r.getLife());
               r.setLife(r.getLife()-robot.getAttack().attaque());
-              updateDoDamage(r);
+              if(r.getLife() <= 0) {
+                  updateHide(r);
+                  for (RobotAction ra: robotActions) {
+                      if(ra.getRobot().getId() == r.getId()){
+                          ra.cancelTimer();
+                      }
+                  }
+                  map.getObjets().remove(r);
+                  //r.remove();
+              }
+              //updateDoDamage(r);
           }
         }
 

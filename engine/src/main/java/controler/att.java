@@ -17,7 +17,7 @@ public class att implements IAttack {
 
     @Override
     public int range() {
-        return 1000;
+        return 150;
     }
 
     @Override
@@ -27,6 +27,9 @@ public class att implements IAttack {
 
     @Override
     public Point location(Point position, java.util.List<Point> positionEnemy) {
-        return positionEnemy.get(0);
+        if(!positionEnemy.isEmpty()) {
+            return positionEnemy.get(0);
+        }
+        return null;
     }
 }
