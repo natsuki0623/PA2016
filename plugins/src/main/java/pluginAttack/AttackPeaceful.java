@@ -25,4 +25,10 @@ public class AttackPeaceful implements IAttack{
 		return null;
 	}
 
+	@Override
+	public int energy() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

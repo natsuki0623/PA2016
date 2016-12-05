@@ -18,11 +18,17 @@ public class AttackRange implements IAttack {
 		// TODO Auto-generated method stub
 		return 100;
 	}
-
+	
 	@Override
 	public Point location(Point position, List<Point> positionEnemy) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int energy() {
+		// TODO Auto-generated method stub
+		return 15;
 	}
 
 }

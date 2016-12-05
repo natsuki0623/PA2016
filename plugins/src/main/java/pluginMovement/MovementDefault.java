@@ -1,6 +1,7 @@
 package pluginMovement;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import IPlugin.IMovement;
@@ -10,7 +11,7 @@ public class MovementDefault implements IMovement{
 	@Override
 	public String move(Point positionIni, List<Point> PositionEnemy) {
 		double dif;
-		List<Point> Enemies = null;
+		List<Point> Enemies = new ArrayList<Point>();
 		double x1=positionIni.getX();
 		/* Comparaison du X de chaque ennemi par rapport au robot ciblé*/
 		

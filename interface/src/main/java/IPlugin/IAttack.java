@@ -13,6 +13,7 @@ public interface IAttack extends IPlugin{
 	public String toString();
 	public int attaque();
 	public int range();
+	public int energy();
 	@Nullable
 	public Point location(Point position, List<Point>positionEnemy);
 }
