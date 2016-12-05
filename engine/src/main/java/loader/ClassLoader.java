@@ -305,7 +305,7 @@ import java.util.zip.ZipFile;
  */
 public class ClassLoader extends  SecureClassLoader {
 
-	public ArrayList<File> paths = new ArrayList<File>();
+	public String paths ;
 	
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
@@ -318,6 +318,10 @@ public class ClassLoader extends  SecureClassLoader {
 		return super.defineClass(name, b, 0, b.length);
 	}
 	
+	public void addPath(String path){
+		paths = path;
+	}
+	
 	/**
 	 * Cette méthode permet de charger le contenu de la classe (dont le 
 	 * nom est passé en paramètre) dans un tableau de byte. Selon l'endroit où
@@ -328,69 +332,16 @@ public class ClassLoader extends  SecureClassLoader {
 	 */
 	private byte[] loadClassData(String name) throws ClassNotFoundException {
 		
-		byte[] bytecode = new byte[1024*16];
-		
+		File fichier = new File(paths);
+		System.out.println(fichier.getName());
+
 		try {
-			for(File f : paths) {
-				//si l'élément de 'paths' correspond à un répertoire
-				if (f.isDirectory()) {
-					String chemin = name.replace('.', '\\') + ".class";
-					File fichier = new File(f, chemin);
-					if (fichier.exists()) {
-						bytecode = Files.readAllBytes(fichier.toPath());
-					}
-					
-				}
-				//si l'élément de 'paths' correspond à une archive .jar
-				else if (f.isFile() && f.getName().endsWith(".jar")){
-					JarFile jar = new JarFile(f);
-					JarEntry entry = jar.getJarEntry(name.replace(".", "/") + ".class");
-					
-					if (entry != null) {
-						InputStream in = jar.getInputStream(entry);
-						
-						ByteArrayOutputStream baos = new ByteArrayOutputStream();
-						
-						int read = 0;
-						while ((read = in.read(bytecode)) != -1) {
-							baos.write(bytecode, 0, read);
-						}
-						baos.flush();
-						bytecode = baos.toByteArray();
-					}
-					else {
-						jar.close();
-						return null;
-					}
-				}
-				//si l'élément de 'paths' correspond à une archive .zip
-				else if (f.isFile() && f.getName().endsWith(".jar")) {
-					ZipFile zip = new ZipFile(f);
-					ZipEntry entry = zip.getEntry(name.replace(".", "/")  + ".class");
-					
-					if (entry != null) {
-						InputStream in = zip.getInputStream(entry);
-						
-						ByteArrayOutputStream baos = new ByteArrayOutputStream ();
-						
-						int read = 0;
-						while ((read = in.read(bytecode)) != -1) {
-							baos.write(bytecode, 0, read);
-						}
-						baos.flush();
-						bytecode = baos.toByteArray();
-					}
-					else {
-						zip.close();
-						return null;
-					}
-				}
-			}
-			
+			return Files.readAllBytes(fichier.toPath());
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return bytecode;
+		return null;
 		
 	}
 

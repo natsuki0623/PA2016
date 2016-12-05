@@ -466,57 +466,57 @@ import IPlugin.IPlugin;
  */
 public class PluginsLoader {
 
-    private ArrayList<Class<?>> plugins;
-    private Class<?> typePlugin;
+	private ArrayList<Class<?>> plugins;
+	private Class<?> typePlugin;
 
-    public PluginsLoader() {
-	this.plugins = new ArrayList<Class<?>>();
-	this.typePlugin = IPlugin.class;
-    }
-
-    public PluginsLoader(Class<?> typePlugin) {
-	this.plugins = new ArrayList<Class<?>>();
-	this.typePlugin = typePlugin;
-    }
-
-    public ArrayList<Class<?>> getPlugins() {
-	return this.plugins;
-    }
-
-    public Class<?> getTypePlugin() {
-	return this.typePlugin;
-    }
-
-    public void setTypePlugin(Class<?> typePlugin) {
-	this.typePlugin = typePlugin;
-    }
-
-    /**
-     * Cette méthode permet de créer des instances des plugins.
-     * 
-     * @param fichier
-     *            f (l'endroit où les classes des plugins se trouvent)
-     * @return un tableau de plugins (instances des classes des plugins)
-     * @throws ClassNotFoundException
-     */
-    public IPlugin[] load(File f) throws ClassNotFoundException {
-	this.init(f);
-
-	IPlugin[] tmpPlugins = new IPlugin[plugins.size()];
-	try {
-	    for (int i = 0; i < tmpPlugins.length; i++) {
-		tmpPlugins[i] = (IPlugin) ((Class) plugins.get(i)).newInstance();
-	    }
-	} catch (InstantiationException e) {
-	    e.printStackTrace();
-	} catch (IllegalAccessException e) {
-	    e.printStackTrace();
+	public PluginsLoader() {
+		this.plugins = new ArrayList<Class<?>>();
+		this.typePlugin = IPlugin.class;
 	}
-	return tmpPlugins;
 
-    }
+	public PluginsLoader(Class<?> typePlugin) {
+		this.plugins = new ArrayList<Class<?>>();
+		this.typePlugin = typePlugin;
+	}
 
-    /**
+	public ArrayList<Class<?>> getPlugins() {
+		return this.plugins;
+	}
+
+	public Class<?> getTypePlugin() {
+		return this.typePlugin;
+	}
+
+	public void setTypePlugin(Class<?> typePlugin) {
+		this.typePlugin = typePlugin;
+	}
+
+	/**
+	 * Cette méthode permet de créer des instances des plugins.
+	 * 
+	 * @param fichier
+	 *            f (l'endroit où les classes des plugins se trouvent)
+	 * @return un tableau de plugins (instances des classes des plugins)
+	 * @throws ClassNotFoundException
+	 */
+	public IPlugin[] load(File f) throws ClassNotFoundException {
+		this.init(f);
+
+		IPlugin[] tmpPlugins = new IPlugin[plugins.size()];
+		try {
+			for (int i = 0; i < tmpPlugins.length; i++) {
+				tmpPlugins[i] = (IPlugin) ((Class) plugins.get(i)).newInstance();
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return tmpPlugins;
+
+	}
+
+	/**
      * Chargement des plugins se trouvant dans f. Cette méthode est appelée lors
      * du des plugins.
      * 
@@ -527,8 +527,7 @@ public class PluginsLoader {
 	// On crée une instance du GeneralClassLoader et on ajoute f à sa liste
 	// de paths
 	ClassLoader cl = new ClassLoader();
-	cl.paths.add(f);
-
+	
 	// Initialisation des variables
 	String className = "";
 	int startIndex = f.toString().length() + 1;
@@ -543,11 +542,11 @@ public class PluginsLoader {
 	    final List<File> files = new ArrayList<File>();
 	    try {
 		Files.walkFileTree(f.toPath(), new SimpleFileVisitor<Path>() {
-
 		    @Override
 		    public FileVisitResult visitFile(Path file,
 			    BasicFileAttributes attrs) throws IOException {
 			if (file.toString().endsWith(".class")) {
+
 			    files.add(file.toFile());
 			}
 			return FileVisitResult.CONTINUE;
@@ -560,11 +559,21 @@ public class PluginsLoader {
 
 	    // On parcourt la liste de classes
 	    for (File file : files) {
+	    	System.out.println("e "+file.getAbsolutePath());
 		endIndex = file.toString().length() - 6; // Cela sert à enlever
 							 // le '.class'
 		className = file.toString().substring(startIndex, endIndex)
 			.replace("\\", ".");
-		Class<?> tmpClass = Class.forName(className, true, cl);
+		System.out.println("+++"+className);
+		
+		cl.addPath(f.getPath()+"/"+className.replace(".", "\\")+".class");
+		String [] test =f.getAbsolutePath().split("\\\\");
+		String type = test[test.length-1];
+		System.out.println("type "+type);
+		
+		className = "pluginAttack."+className;
+		
+		Class<?> tmpClass = cl.findClass(className);
 		// On regarde si la classe a des interfaces, sinon, ce n'est
 		// même pas la peine d'y regarder
  		if (tmpClass.getInterfaces().length != 0) {
@@ -648,18 +657,16 @@ public class PluginsLoader {
 	    }
 	}
     }
-    
-    public static void main(String[] args) throws ClassNotFoundException {
+
+	public static void main(String[] args) throws ClassNotFoundException {
 		JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new java.io.File("."));
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.showOpenDialog(null);
 		File file1 = fc.getSelectedFile();
-		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		System.out.println(file1.getAbsolutePath());
-		String[] cheminRep = file1.getAbsolutePath().split("AttackCac");
-		System.out.println(cheminRep[0].toString());
-		File file2 = new File(cheminRep[0].substring(0, cheminRep.length-1));
 		PluginsLoader pl = new PluginsLoader();
-		pl.init(file2);
+		pl.init(file1);
 		System.out.println(pl.getPlugins());
 	}
 }
