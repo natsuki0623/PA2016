@@ -13,7 +13,7 @@ import java.util.List;
  * Created by JuIngong on 22/11/2016.
  */
 public class RobotAction {
-    private static final long TIME = 100;
+    private static final long TIME = 1000;
 
     private Robot robot;
 
@@ -22,17 +22,21 @@ public class RobotAction {
     private TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
+            if (robot.getEnergy() < 100) {
+                robot.setEnergy(robot.getEnergy() + 1);
+            }
             Model model = Model.getModel();
             Direction direction = Direction.getDirection(robot.getMovement().move(robot.getPosition(), model.listEnemy(robot)));
             if (direction != null && !Direction.NONE.equals(direction)) {
                 moveRobot(direction);
             }
-
-            Point dam = robot.getAttack().location(robot.getPosition(), model.listEnemy(robot));
-            if (dam != null) {
-                int range = (int) Math.sqrt(Math.pow(robot.getPosition().getX() - dam.getX(), 2) + Math.pow(robot.getPosition().getY() - dam.getY(), 2));
-                if (range <= robot.getAttack().range()) {
-                    attackRobot(dam);
+            if (robot.getEnergy() >= robot.getAttack().energy()) {
+                Point dam = robot.getAttack().location(robot.getPosition(), model.listEnemy(robot));
+                if (dam != null) {
+                    int range = (int) Math.sqrt(Math.pow(robot.getPosition().getX() - dam.getX(), 2) + Math.pow(robot.getPosition().getY() - dam.getY(), 2));
+                    if (range <= robot.getAttack().range()) {
+                        attackRobot(dam);
+                    }
                 }
             }
         }
@@ -48,16 +52,16 @@ public class RobotAction {
 
 
     /**
-     *
      * @param point
      */
-    private void attackRobot(Point point){
+    private void attackRobot(Point point) {
         Model model = Model.getModel();
         model.doDamage(robot, point);
     }
 
     /**
      * tentative de deplacement du robot dans une direction
+     *
      * @param direction direction demlandé
      */
     private void moveRobot(Direction direction) {

@@ -9,9 +9,9 @@
 
 
     <modules>
+        <module>interface</module>
         <module>plugins</module>
         <module>engine</module>
-        <module>interface</module>
     </modules>
     <packaging>pom</packaging>
 

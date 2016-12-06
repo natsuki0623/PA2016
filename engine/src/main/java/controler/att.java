@@ -12,7 +12,7 @@ import java.util.List;
 public class att implements IAttack {
     @Override
     public int attaque() {
-        return 50;
+        return 5;
     }
 
     @Override
@@ -31,5 +31,11 @@ public class att implements IAttack {
             return positionEnemy.get(0);
         }
         return null;
+    }
+
+    @Override
+    public void animation(Graphics g) {
+        g.setColor(Color.red);
+        g.fillOval(20,20, 10,10);
     }
 }

@@ -37,7 +37,7 @@ public class MapView extends JPanel implements Observer {
             hideObject((int) data.get("hide"));
             repaint();
         } else if (data.containsKey("damage")) {
-            damage((int) data.get("damage"));
+            damage(((HashMap<String, Object>) data.get("damage")));
             repaint();
         }
     }
@@ -46,16 +46,25 @@ public class MapView extends JPanel implements Observer {
         Point point = (Point) data.get("point");
         int id = (int) data.get("id");
 
-        JPanel panel = listPanel.get(id);
+        PanelRobot panel = (PanelRobot) listPanel.get(id);
         panel.setLocation(point);
+        panel.hideAtt();
+
     }
 
     private void hideObject(int id) {
         listPanel.get(id).setVisible(false);
     }
 
-    private void damage(int id) {
-        //TODO
+    private void damage(HashMap<String, Object> data) {
+        int life = (int) data.get("life");
+        int id = (int) data.get("id");
+        int sourceId = (int) data.get("sourceId");
+
+        PanelRobot panel = (PanelRobot)listPanel.get(id);
+        PanelRobot panelSource = (PanelRobot)listPanel.get(sourceId);
+        panel.setOpacity(255*life/100);
+        panelSource.showAtt();
     }
 
     private void initListPanel() {

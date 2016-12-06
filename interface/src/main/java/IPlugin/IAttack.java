@@ -16,4 +16,5 @@ public interface IAttack extends IPlugin{
 	public int energy();
 	@Nullable
 	public Point location(Point position, List<Point>positionEnemy);
+	public void animation(Graphics g);
 }

@@ -1,6 +1,6 @@
 package pluginAttack;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.List;
 
 import IPlugin.IAttack;
@@ -22,6 +22,11 @@ public class AttackPeaceful implements IAttack{
 	@Override
 	public Point location(Point position, List<Point> positionEnemy) {
 		return null;
+	}
+
+	@Override
+	public void animation(Graphics g) {
+
 	}
 
 	@Override

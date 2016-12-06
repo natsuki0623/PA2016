@@ -55,30 +55,30 @@ public class PickachuDrawing extends JPanel {
 //		Image img1 = ImageIO.read(new File("C:\\Users\\antoi\\Desktop\\PA\\PA2016\\plugins\\Pickachu.png"));
 //		PickachuDrawing picka = new PickachuDrawing(img1);
 //		picka.paintComponent(g);
-    	
-    	    JFrame fen = new JFrame ("Ordinateur Qui Parle");
-    	  
-    	    JPanel pan = new ImagePane("/data/robot.png");
-    	    pan.setBackground(Color.BLUE);
-    	    fen.setContentPane(pan); 
-    	  
-    	    JTextField tape = new JTextField ();
-    	  
-    	    Font police = new Font ("Arial", Font.BOLD, 25);
-    	    pan.add(tape);
-    	    tape.setBounds(60,450,560,50);
-    	    tape.setFont(police); 
-    	  
-    	    JButton bouton = new JButton ("Dis lui !");
-    	    pan.add(bouton);
-    	    bouton.setVisible(true);
-    	    bouton.setBounds(650,450,150,50);
-    	 
-    	   fen.setSize(850,600);
-    	   fen.pack();
-    	   fen.setLocationRelativeTo(null);
-    	   fen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	   fen.setVisible(true);
+//
+//    	    JFrame fen = new JFrame ("Ordinateur Qui Parle");
+//
+//    	    JPanel pan = new ImagePane("/data/robot.png");
+//    	    pan.setBackground(Color.BLUE);
+//    	    fen.setContentPane(pan);
+//
+//    	    JTextField tape = new JTextField ();
+//
+//    	    Font police = new Font ("Arial", Font.BOLD, 25);
+//    	    pan.add(tape);
+//    	    tape.setBounds(60,450,560,50);
+//    	    tape.setFont(police);
+//
+//    	    JButton bouton = new JButton ("Dis lui !");
+//    	    pan.add(bouton);
+//    	    bouton.setVisible(true);
+//    	    bouton.setBounds(650,450,150,50);
+//
+//    	   fen.setSize(850,600);
+//    	   fen.pack();
+//    	   fen.setLocationRelativeTo(null);
+//    	   fen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    	   fen.setVisible(true);
     	
 	}
 }

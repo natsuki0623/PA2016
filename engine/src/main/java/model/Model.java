@@ -65,10 +65,19 @@ public class Model extends Observable {
      *
      * HashMap : "point"->Point
      *                 "id"->int
+     *                 "sourceId" -> int
+     * @param objA robot qui lance l'attaque
+     * @param objC robot qui subit l'attaque
      */
-    public void updateDoDamage(ObjectHitbox objC){
-        HashMap<String, Integer> send = new HashMap<>();
-        send.put("damage", objC.getId());
+    public void updateDoDamage(ObjectHitbox objC, ObjectHitbox objA){
+        HashMap<String, HashMap<String, Object>> send = new HashMap<>();
+        HashMap<String, Object> description = new HashMap<>();
+
+        description.put("life", ((Robot)objC).getLife());
+        description.put("id",objC.getId());
+        description.put("sourceId",objA.getId());
+
+        send.put("damage", description);
 
         setChanged();
         notifyObservers(send);
@@ -91,10 +100,9 @@ public class Model extends Observable {
 
 
     public void doDamage(Robot robot, Point point){
+        robot.setEnergy(robot.getEnergy()-robot.getAttack().energy());
         for(Robot r : getMap().getEnemy(robot)){
-            System.out.println(r.toString());
           if(r.isTouch(point)){
-        	  
               System.out.println(r.getId() + " " + r.getLife());
               r.setLife(r.getLife()-robot.getAttack().attaque());
               if(r.getLife() <= 0) {
@@ -107,7 +115,9 @@ public class Model extends Observable {
                   map.getObjets().remove(r);
                   //r.remove();
               }
-              //updateDoDamage(r);
+              else {
+                  updateDoDamage(r, robot);
+              }
           }
         }
 

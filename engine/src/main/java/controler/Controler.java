@@ -114,7 +114,10 @@ public class Controler {
 
         for (ObjectHitbox obj : listObj) {
             if (ObjectHitbox.Type.Robot.name().equals(obj.getType())) {
-                listPanel.put(obj.getId(), new PanelRobot(((Robot) obj).getDrawing(), obj.getHitBox()));
+                PanelRobot panelRobot = new PanelRobot(((Robot) obj).getDrawing(), obj.getHitBox());
+                panelRobot.setAttack(((Robot) obj).getAttack());
+                listPanel.put(obj.getId(), panelRobot);
+
             }
             else if(ObjectHitbox.Type.ObjectHitbox.name().equals(obj.getType())) {
                 listPanel.put(obj.getId(), new Wall(obj.getHitBox()));

@@ -1,6 +1,6 @@
 package pluginAttack;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +34,11 @@ public class AttackRange implements IAttack {
 			return null;			
 		}
 		else return Enemies.get(0);
+	}
+
+	@Override
+	public void animation(Graphics g) {
+
 	}
 
 	@Override
