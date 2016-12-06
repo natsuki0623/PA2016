@@ -559,17 +559,14 @@ public class PluginsLoader {
 
 	    // On parcourt la liste de classes
 	    for (File file : files) {
-	    	System.out.println("e "+file.getAbsolutePath());
 		endIndex = file.toString().length() - 6; // Cela sert à enlever
 							 // le '.class'
 		className = file.toString().substring(startIndex, endIndex)
 			.replace("\\", ".");
-		System.out.println("+++"+className);
 		
 		cl.addPath(f.getPath()+"/"+className.replace(".", "\\")+".class");
 		String [] test =f.getAbsolutePath().split("\\\\");
 		String type = test[test.length-1];
-		System.out.println("type "+type);
 		
 		className = "pluginAttack."+className;
 		

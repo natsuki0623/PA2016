@@ -94,6 +94,7 @@ public class Model extends Observable {
         for(Robot r : getMap().getEnemy(robot)){
             System.out.println(r.toString());
           if(r.isTouch(point)){
+        	  
               System.out.println(r.getId() + " " + r.getLife());
               r.setLife(r.getLife()-robot.getAttack().attaque());
               if(r.getLife() <= 0) {

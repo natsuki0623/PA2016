@@ -8,11 +8,15 @@ import view.PanelRobot;
 import view.Wall;
 
 import javax.swing.*;
+
+import loader.PluginsLoader;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class CustomMapControler implements ActionListener {
     private static final int SIZE = 50;
 
     private JFrame frame;
+    private JFrame framePlugin;
 
     private CustomMapView view;
     private JPopupMenu popupMenu;
@@ -37,7 +42,7 @@ public class CustomMapControler implements ActionListener {
 
     private CustomMapListener listener;
 
-    public CustomMapControler() {
+    public CustomMapControler() throws ClassNotFoundException {
         listener = new CustomMapListener(this);
         objectHitboxes = new ArrayList<>();
         initPopup();
@@ -60,7 +65,7 @@ public class CustomMapControler implements ActionListener {
         eraser.addActionListener(this);
     }
 
-    private void initView() {
+    private void initView() throws ClassNotFoundException {
         //fenetre
         frame = new JFrame("Création carte");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -69,7 +74,50 @@ public class CustomMapControler implements ActionListener {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.addKeyListener(listener);
-
+        JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new java.io.File("."));
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fc.showOpenDialog(null);
+		File file1 = fc.getSelectedFile();
+		System.out.println(file1.getAbsolutePath());
+		PluginsLoader pl = new PluginsLoader();
+		pl.init(file1);
+		System.out.println(pl.getPlugins());
+        framePlugin = new JFrame("Selection des Plugins");
+        framePlugin.setSize(500, 1000);
+        JPanel panelPlugin = new JPanel();
+        panelPlugin.setLayout(new BoxLayout(panelPlugin, BoxLayout.Y_AXIS));
+        ArrayList<JCheckBox> array = new ArrayList<JCheckBox>();
+        for (int i = 0; i < pl.getPlugins().size(); i++) {
+			JCheckBox checkb = new JCheckBox();
+			checkb.setText(pl.getPlugins().get(i).getName());
+			array.add(checkb);
+			panelPlugin.add(array.get(i));
+			System.out.println(array.size());
+		}
+        JButton bPlugin = new JButton("validate");
+        panelPlugin.add(bPlugin);
+        framePlugin.add(panelPlugin);
+        
+//        JComboBox combob = new JComboBox();
+//        for (int i = 0; i < pl.getPlugins().size(); i++) {
+//			combob.addItem(pl.getPlugins().get(i).getName());
+//			
+//		}
+//        panelPlugin.add(combob);
+//        JButton bPlugin = new JButton("validate");
+//        panelPlugin.add(bPlugin);
+//        framePlugin.add(panelPlugin);
+        
+		bPlugin.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				framePlugin.setVisible(false);		
+			}
+		});
+       
+        
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -87,6 +135,7 @@ public class CustomMapControler implements ActionListener {
 
         frame.add(view, BorderLayout.CENTER);
         frame.setVisible(true);
+        framePlugin.setVisible(true);
     }
 
     // ------------------------------------------- MOUSE
@@ -186,7 +235,7 @@ public class CustomMapControler implements ActionListener {
         return listener;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         new CustomMapControler();
     }
 }
