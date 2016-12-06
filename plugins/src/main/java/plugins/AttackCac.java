@@ -1,4 +1,4 @@
-package pluginAttack;
+package plugins;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ public class AttackCac implements IAttack{
 
 	public int attaque() {
 		
-		return 70;
+		return 5;
 	}
 
 	public int range() {
@@ -35,7 +35,8 @@ public class AttackCac implements IAttack{
 
 	@Override
 	public void animation(Graphics g) {
-
+		g.setColor(Color.red);
+		g.fillOval(20, 20, 10, 10);
 	}
 
 	@Override

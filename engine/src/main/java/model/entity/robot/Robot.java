@@ -24,7 +24,7 @@ public class Robot extends ObjectHitbox {
     private IMovement movement;
     private IDrawing drawing;
 
-    public Robot(int life, int energy, IAttack attack, IMovement movement, Rectangle hitbox, IDrawing drawing) {
+    public Robot(int life, int energy, Rectangle hitbox, IDrawing drawing, IAttack attack, IMovement movement) {
         super(hitbox, Type.Robot.name());
         this.life = life;
         this.energy = energy;

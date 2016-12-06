@@ -1,5 +1,6 @@
 package controler;
 
+import IPlugin.*;
 import model.entity.ObjectHitbox;
 import model.entity.robot.Robot;
 import view.Cell;
@@ -34,6 +35,13 @@ public class CustomMapControler implements ActionListener {
     private JPopupMenu popupMenu;
 
     private List<ObjectHitbox> objectHitboxes;
+    private List<IAttack> iAttacks;
+    private List<IDrawing> iDrawings;
+    private List<IMovement> iMovements;
+
+    private IDrawing drawing;
+    private IAttack attack;
+    private IMovement movement;
 
     private int cols;
     private int rows;
@@ -43,6 +51,9 @@ public class CustomMapControler implements ActionListener {
     private CustomMapListener listener;
 
     public CustomMapControler() throws ClassNotFoundException {
+        iAttacks = new ArrayList<>();
+        iMovements = new ArrayList<>();
+        iDrawings = new ArrayList<>();
         listener = new CustomMapListener(this);
         objectHitboxes = new ArrayList<>();
         initPopup();
@@ -74,27 +85,58 @@ public class CustomMapControler implements ActionListener {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.addKeyListener(listener);
+
+
         JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(new java.io.File("."));
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.showOpenDialog(null);
 		File file1 = fc.getSelectedFile();
-		System.out.println(file1.getAbsolutePath());
 		PluginsLoader pl = new PluginsLoader();
 		pl.init(file1);
 		System.out.println(pl.getPlugins());
+		for (Class<?> p : pl.getPlugins()){
+            try {
+                if(p.getInterfaces()[0].getName().equals("IPlugin.IAttack")){
+                    iAttacks.add((IAttack) p.newInstance());
+                }
+                else if(p.getInterfaces()[0].getName().equals("IPlugin.IDrawing")){
+                    iDrawings.add((IDrawing) p.newInstance());
+                }
+                else if (p.getInterfaces()[0].getName().equals("IPlugin.IMovement")){
+                    iMovements.add((IMovement) p.newInstance());
+                }
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
         framePlugin = new JFrame("Selection des Plugins");
         framePlugin.setSize(500, 1000);
         JPanel panelPlugin = new JPanel();
         panelPlugin.setLayout(new BoxLayout(panelPlugin, BoxLayout.Y_AXIS));
-        ArrayList<JCheckBox> array = new ArrayList<JCheckBox>();
-        for (int i = 0; i < pl.getPlugins().size(); i++) {
+        ArrayList<JCheckBox> array1 = new ArrayList<JCheckBox>();
+        for (int i = 0; i < iAttacks.size(); i++) {
 			JCheckBox checkb = new JCheckBox();
-			checkb.setText(pl.getPlugins().get(i).getName());
-			array.add(checkb);
-			panelPlugin.add(array.get(i));
-			System.out.println(array.size());
+			checkb.setText(iAttacks.get(i).getClass().getName());
+			array1.add(checkb);
+			panelPlugin.add(array1.get(i));
 		}
+        ArrayList<JCheckBox> array2 = new ArrayList<JCheckBox>();
+        for (int i = 0; i < iDrawings.size(); i++) {
+            JCheckBox checkb = new JCheckBox();
+            checkb.setText(iDrawings.get(i).getClass().getName());
+            array2.add(checkb);
+            panelPlugin.add(array2.get(i));
+        }
+        ArrayList<JCheckBox> array3 = new ArrayList<JCheckBox>();
+        for (int i = 0; i < iMovements.size(); i++) {
+            JCheckBox checkb = new JCheckBox();
+            checkb.setText(iMovements.get(i).getClass().getName());
+            array3.add(checkb);
+            panelPlugin.add(array3.get(i));
+        }
         JButton bPlugin = new JButton("validate");
         panelPlugin.add(bPlugin);
         framePlugin.add(panelPlugin);
@@ -113,6 +155,33 @@ public class CustomMapControler implements ActionListener {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+			    for (JCheckBox jCheckBox : array1){
+			        if(jCheckBox.isSelected()){
+			            for(IAttack a : iAttacks){
+			                if(a.getClass().getName().equals(jCheckBox.getText())){
+			                    attack = a;
+                            }
+                        }
+                    }
+                }
+                for (JCheckBox jCheckBox : array2){
+                    if(jCheckBox.isSelected()){
+                        for(IDrawing a : iDrawings){
+                            if(a.getClass().getName().equals(jCheckBox.getText())){
+                                drawing = a;
+                            }
+                        }
+                    }
+                }
+                for (JCheckBox jCheckBox : array3){
+                    if(jCheckBox.isSelected()){
+                        for(IMovement a : iMovements){
+                            if(a.getClass().getName().equals(jCheckBox.getText())){
+                                movement = a;
+                            }
+                        }
+                    }
+                }
 				framePlugin.setVisible(false);		
 			}
 		});
@@ -155,8 +224,8 @@ public class CustomMapControler implements ActionListener {
         } else if (type.equals(ObjectHitbox.Type.Robot.name())) {
             Rectangle rect = new Rectangle(pos.x, pos.y, SIZE, SIZE);
             //TODO Selection plugin
-            panel = new PanelRobot(new dra(), rect);
-            objectHitboxes.add(new Robot(100, 100, rect));
+            panel = new PanelRobot(drawing, rect);
+            objectHitboxes.add(new Robot(100, 100, rect, drawing, attack, movement));
         } else {
             panel = new Cell();
             panel.setBounds(pos.x, pos.y, SIZE, SIZE);

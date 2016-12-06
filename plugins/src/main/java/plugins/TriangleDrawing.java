@@ -1,9 +1,11 @@
-package pluginDrawing;
+package plugins;
+
+import IPlugin.IDrawing;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class TriangleDrawing {
+public class TriangleDrawing implements IDrawing {
 
 	public void draw(Graphics g) {
 		g.setColor(Color.blue);

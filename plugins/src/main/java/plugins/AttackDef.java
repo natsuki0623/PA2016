@@ -1,15 +1,15 @@
-package controler;
+package plugins;
 
 import IPlugin.IAttack;
 
 import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 /**
- * Created by JuIngong on 05/12/2016.
+ * Class created on 06/12/2016
+ *
+ * @author JuIngong
  */
-public class att implements IAttack {
+public class AttackDef implements IAttack {
     @Override
     public int attaque() {
         return 5;
@@ -27,7 +27,7 @@ public class att implements IAttack {
 
     @Override
     public Point location(Point position, java.util.List<Point> positionEnemy) {
-        if(!positionEnemy.isEmpty()) {
+        if (!positionEnemy.isEmpty()) {
             return positionEnemy.get(0);
         }
         return null;
@@ -36,6 +36,6 @@ public class att implements IAttack {
     @Override
     public void animation(Graphics g) {
         g.setColor(Color.red);
-        g.fillOval(20,20, 10,10);
+        g.fillOval(20, 20, 10, 10);
     }
 }

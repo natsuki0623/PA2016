@@ -1,4 +1,4 @@
-package pluginAttack;
+package plugins;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ public class AttackRange implements IAttack {
 	@Override
 	public int attaque() {
 		// TODO Auto-generated method stub
-		return 70;
+		return 5;
 	}
 
 	@Override
 	public int range() {
 		// TODO Auto-generated method stub
-		return 100;
+		return 300;
 	}
 	
 	@Override
@@ -38,7 +38,8 @@ public class AttackRange implements IAttack {
 
 	@Override
 	public void animation(Graphics g) {
-
+		g.setColor(Color.red);
+		g.fillOval(20, 20, 10, 10);
 	}
 
 	@Override

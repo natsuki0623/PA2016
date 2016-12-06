@@ -27,8 +27,8 @@ public class PanelRobot extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         drawing.draw(g);
-        g.setColor(new Color(g.getColor().getRed(), g.getColor().getGreen(), g.getColor().getBlue(), opacity));
-        g.fillRect(0,0, getWidth(), getHeight());
+        g.setColor(new Color(Color.red.getRed(),Color.red.getGreen(),Color.red.getBlue(),opacity));
+        g.fillRect(0,0,50,10);
         if(att){
             attack.animation(g);
         }

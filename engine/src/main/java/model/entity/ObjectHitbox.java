@@ -1,5 +1,8 @@
 package model.entity;
 
+import IPlugin.IAttack;
+import IPlugin.IDrawing;
+import IPlugin.IMovement;
 import model.entity.robot.*;
 import model.entity.robot.Robot;
 
@@ -157,7 +160,7 @@ public class ObjectHitbox {
      * vers cette objet
      */
     public void remove() {
-        //objectTotalNb--;
+        objectTotalNb--;
         hitBox = null;
         id = 0;
     }
@@ -199,7 +202,15 @@ public class ObjectHitbox {
         if (descObj.containsKey("hauteur")) hauteur = (int) descObj.get("hauteur");
 
         Rectangle rect = new Rectangle(x, y, largeur, hauteur);
-        if (Type.Robot.name().equals(type)) return new Robot(100, 100, rect);
+        if (Type.Robot.name().equals(type)){
+            IMovement move = null;
+            IAttack attack = null;
+            IDrawing drawing = null;
+            if (descObj.containsKey("move")) {move = (IMovement) descObj.get("move");}
+            if (descObj.containsKey("attack")) {attack = (IAttack) descObj.get("attack");}
+            if (descObj.containsKey("draw")) {drawing = (IDrawing) descObj.get("draw");}
+            return new Robot(100, 100, rect, drawing, attack, move);
+        }
 
         return new ObjectHitbox(rect);
     }

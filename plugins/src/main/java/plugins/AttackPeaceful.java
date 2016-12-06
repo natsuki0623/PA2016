@@ -1,4 +1,4 @@
-package pluginAttack;
+package plugins;
 
 import java.awt.*;
 import java.util.List;

@@ -42,13 +42,13 @@ public class Controler {
     private void initMap(HashMap<String, Object> data){
 
         ArrayList<ObjectHitbox> objectHitboxes = initObjetCollision(data);
-        for (ObjectHitbox o : objectHitboxes) {
-            if (o.getType().equals(ObjectHitbox.Type.Robot.name())) {
-                ((Robot)o).setAttack(new att());
-                ((Robot)o).setDrawing(new dra());
-                ((Robot)o).setMovement(new deplacem());
-            }
-        }
+//        for (ObjectHitbox o : objectHitboxes) {
+//            if (o.getType().equals(ObjectHitbox.Type.Robot.name())) {
+//                ((Robot)o).setAttack(new att());
+//                ((Robot)o).setDrawing(new dra());
+//                ((Robot)o).setMovement(new deplacem());
+//            }
+//        }
         initFrame();
         mapView =  new MapView(toListPanel(objectHitboxes));
         Model.createModel(new Map(objectHitboxes), robotActions);
@@ -70,9 +70,9 @@ public class Controler {
 
         for (int i = 0; i < 5; i++) {
             Robot robot = new Robot(100, 100, new Rectangle(i * 50, i * 50, 50, 50));
-            robot.setAttack(new att());
-            robot.setDrawing(new dra());
-            robot.setMovement(new deplacem());
+//            robot.setAttack(new att());
+//            robot.setDrawing(new dra());
+//            robot.setMovement(new deplacem());
             objectHitboxes.add(robot);
         }
         Map map = new Map(objectHitboxes);

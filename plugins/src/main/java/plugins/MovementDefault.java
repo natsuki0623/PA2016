@@ -1,4 +1,4 @@
-package pluginMovement;
+package plugins;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import IPlugin.IMovement;
 
-public class MovementEscape implements IMovement{
+public class MovementDefault implements IMovement{
 
 	@Override
 	public String move(Point positionIni, List<Point> PositionEnemy) {
@@ -85,16 +85,15 @@ public class MovementEscape implements IMovement{
 		double x2= closerEnnemy.getX();
 		double y2=closerEnnemy.getY();
 		if(dify>=difx){
-			if(y2>y1) return "NORTH";
-			else return "SOUTH";
+			if(y2>y1) return "SOUTH";
+			else return "NORTH";
 		}
 		if(difx>dify){
-			if(x1>x2) return "EAST";
-			else return "WEST";			
+			if(x1>x2) return "WEST";
+			else return "EAST";			
 		}
 		
 		return "NONE";
 	}
+	
 }
-
-

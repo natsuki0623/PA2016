@@ -1,4 +1,4 @@
-package pluginMovement;
+package plugins;
 
 import java.awt.Point;
 import java.util.Arrays;
