@@ -14,7 +14,7 @@ public class AttackCac implements IAttack{
 	}
 
 	public int range() {
-		return 10;
+		return 100;
 	}
 
 	@Override

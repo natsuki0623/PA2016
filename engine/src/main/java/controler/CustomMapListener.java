@@ -38,6 +38,9 @@ public class CustomMapListener implements KeyListener, MouseListener {
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             controler.getFrame().dispose();
         }
+        else if (e.getKeyCode() == KeyEvent.VK_F1){
+            controler.getFramePlugin().setVisible(true);
+        }
 
     }
 

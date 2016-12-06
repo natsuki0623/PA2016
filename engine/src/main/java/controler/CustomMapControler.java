@@ -141,16 +141,6 @@ public class CustomMapControler implements ActionListener {
         panelPlugin.add(bPlugin);
         framePlugin.add(panelPlugin);
         
-//        JComboBox combob = new JComboBox();
-//        for (int i = 0; i < pl.getPlugins().size(); i++) {
-//			combob.addItem(pl.getPlugins().get(i).getName());
-//			
-//		}
-//        panelPlugin.add(combob);
-//        JButton bPlugin = new JButton("validate");
-//        panelPlugin.add(bPlugin);
-//        framePlugin.add(panelPlugin);
-        
 		bPlugin.addActionListener(new ActionListener() {
 			
 			@Override
@@ -298,6 +288,10 @@ public class CustomMapControler implements ActionListener {
 
     public String getType() {
         return type;
+    }
+
+    public JFrame getFramePlugin() {
+        return framePlugin;
     }
 
     public CustomMapListener getListener() {
