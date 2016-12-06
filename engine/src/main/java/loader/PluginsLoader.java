@@ -568,7 +568,16 @@ public class PluginsLoader {
 		String [] test =f.getAbsolutePath().split("\\\\");
 		String type = test[test.length-1];
 		
-		className = "pluginAttack."+className;
+		
+		if(f.getPath().contains("pluginAttack")){
+			className = "pluginAttack."+className;
+			}
+		if(f.getPath().contains("pluginDrawing")){
+			className = "pluginDrawing."+className;
+			}
+		if(f.getPath().contains("pluginMovement")){
+			className = "pluginMovement."+className;
+			}
 		
 		Class<?> tmpClass = cl.findClass(className);
 		// On regarde si la classe a des interfaces, sinon, ce n'est
