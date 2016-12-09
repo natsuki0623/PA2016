@@ -8,4 +8,7 @@ import java.awt.Graphics;
 public interface IDrawing extends IPlugin{
 	public String toString();
 	public void draw(Graphics g);
+	public void colorLife(Graphics g);
+	public void colorEnergy(Graphics g);
+
 }

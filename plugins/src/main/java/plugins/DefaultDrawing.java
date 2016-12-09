@@ -11,4 +11,14 @@ public class DefaultDrawing implements IDrawing{
 		g.fillRect(0, 0, 50, 50);
 	}
 
+	@Override
+	public void colorLife(Graphics g) {
+		g.setColor(Color.red);
+	}
+
+	@Override
+	public void colorEnergy(Graphics g) {
+		g.setColor(Color.blue);
+	}
+
 }

@@ -32,29 +32,30 @@ public class Model extends Observable {
         listReset = new HashMap<>();
     }
 
-    public static Model createModel( Map map, List<RobotAction> robotAction, Dimension size){
-        model = new Model(map,robotAction, size);
+    public static Model createModel(Map map, List<RobotAction> robotAction, Dimension size) {
+        model = new Model(map, robotAction, size);
         return model;
     }
 
-    public static Model getModel(){
+    public static Model getModel() {
         return model;
     }
 
 
     // ------------------------------------------- Update
+
     /**
      * Permet de mettre a jour la vue.
-     *
+     * <p>
      * HashMap : "point"->Point
-     *                 "id"->int
+     * "id"->int
      */
     public void updateMove(ObjectHitbox objC) {
         HashMap<String, HashMap<String, Object>> send = new HashMap<>();
         HashMap<String, Object> description = new HashMap<>();
 
         description.put("point", objC.getDefaultPosition());
-        description.put("id",objC.getId());
+        description.put("id", objC.getId());
 
         send.put("move", description);
 
@@ -64,20 +65,21 @@ public class Model extends Observable {
 
     /**
      * Permet de mettre a jour la vue pour les degat.
-     *
+     * <p>
      * HashMap : "point"->Point
-     *                 "id"->int
-     *                 "sourceId" -> int
+     * "id"->int
+     * "sourceId" -> int
+     *
      * @param objA robot qui lance l'attaque
      * @param objC robot qui subit l'attaque
      */
-    public void updateDoDamage(ObjectHitbox objC, ObjectHitbox objA){
+    public void updateDoDamage(ObjectHitbox objC, ObjectHitbox objA) {
         HashMap<String, HashMap<String, Object>> send = new HashMap<>();
         HashMap<String, Object> description = new HashMap<>();
 
-        description.put("life", ((Robot)objC).getLife());
-        description.put("id",objC.getId());
-        description.put("sourceId",objA.getId());
+        description.put("life", ((Robot) objC).getLife());
+        description.put("id", objC.getId());
+        description.put("sourceId", objA.getId());
 
         send.put("damage", description);
 
@@ -85,9 +87,22 @@ public class Model extends Observable {
         notifyObservers(send);
     }
 
+    public void updateEnergy(ObjectHitbox objC) {
+        HashMap<String, HashMap<String, Object>> send = new HashMap<>();
+        HashMap<String, Object> description = new HashMap<>();
+
+        description.put("energy", ((Robot) objC).getEnergy());
+        description.put("id", objC.getId());
+
+        send.put("energy", description);
+
+        setChanged();
+        notifyObservers(send);
+    }
+
     /**
      * Permet de cacher un objet sur la vue
-     *
+     * <p>
      * HashMap :   "id"->int
      */
     private void updateHide(ObjectHitbox objC) {
@@ -100,35 +115,39 @@ public class Model extends Observable {
 
     // ------------------------------------------- Methodes
 
+    public void useEnergy(Robot robot) {
+        updateEnergy(robot);
+    }
 
-    public void doDamage(Robot robot, Point point){
-        robot.setEnergy(robot.getEnergy()-robot.getAttack().energy());
-        for(Robot r : getMap().getEnemy(robot)){
-          if(r.isTouch(point)){
-              r.setLife(r.getLife()-robot.getAttack().attaque());
-              if(r.getLife() <= 0) {
-                  updateHide(r);
-                  for (RobotAction ra: robotActions) {
-                      if(ra.getRobot().getId() == r.getId()){
-                          ra.cancelTimer();
-                      }
-                  }
-                  map.getObjets().remove(r);
-                  //r.remove();
-              }
-              else {
-                  updateDoDamage(r, robot);
-              }
-          }
+    public void doDamage(Robot robot, Point point) {
+        robot.setEnergy(robot.getEnergy() - robot.getAttack().energy());
+        useEnergy(robot);
+        for (Robot r : getMap().getEnemy(robot)) {
+            if (r.isTouch(point)) {
+                r.setLife(r.getLife() - robot.getAttack().attaque());
+                if (r.getLife() <= 0) {
+                    updateHide(r);
+                    for (RobotAction ra : robotActions) {
+                        if (ra.getRobot().getId() == r.getId()) {
+                            ra.cancelTimer();
+                        }
+                    }
+                    map.getObjets().remove(r);
+                    //r.remove();
+                } else {
+                    updateDoDamage(r, robot);
+                }
+            }
         }
 
     }
 
     /**
      * Permet de bouger un robot dans une direction.
+     *
      * @param robot
      */
-    public void moveRobot(Robot robot, Direction direction){
+    public void moveRobot(Robot robot, Direction direction) {
         robot.move(direction);
         updateMove(robot);
     }
@@ -140,43 +159,37 @@ public class Model extends Observable {
      * @param self Robot demandant
      * @return List des position des robot sauf celui demandant
      */
-    public List<Point> listEnemy(Robot self){
-        return map.getEnemy(self).stream()
-                .map(enemy -> enemy.getPosition())
-                .collect(Collectors.toList());
+    public List<Point> listEnemy(Robot self) {
+        return map.getEnemy(self).stream().map(enemy -> enemy.getPosition()).collect(Collectors.toList());
     }
 
     /**
      * Retourne une liste des objets qui seront en collision avec l'objet si
      * l'objet se déplace dans la direction donnée en parametre.
+     *
      * @param objectHitbox
      * @param direction
      * @return
      */
-    public List<ObjectHitbox> listObjHitbox(ObjectHitbox objectHitbox, Direction direction){
-        if( direction == null || Direction.NONE.equals(direction)){
+    public List<ObjectHitbox> listObjHitbox(ObjectHitbox objectHitbox, Direction direction) {
+        if (direction == null || Direction.NONE.equals(direction)) {
             return null;
         }
 
         int vit = Robot.SPEED;
-        Rectangle hitBoxObj =  objectHitbox.getHitBox();
-        Rectangle hitBox = new Rectangle(hitBoxObj.x, hitBoxObj.y,
-                hitBoxObj.width, hitBoxObj.height);
-        if(Direction.NORTH.equals(direction)){
+        Rectangle hitBoxObj = objectHitbox.getHitBox();
+        Rectangle hitBox = new Rectangle(hitBoxObj.x, hitBoxObj.y, hitBoxObj.width, hitBoxObj.height);
+        if (Direction.NORTH.equals(direction)) {
             hitBox.setLocation(hitBox.x, hitBox.y - vit);
-        }
-        else if(Direction.SOUTH.equals(direction)){
-            hitBox.setLocation(hitBox.x, hitBox.y + vit );
-        }
-        else if(Direction.EAST.equals(direction)){
+        } else if (Direction.SOUTH.equals(direction)) {
+            hitBox.setLocation(hitBox.x, hitBox.y + vit);
+        } else if (Direction.EAST.equals(direction)) {
             hitBox.setLocation(hitBox.x + vit, hitBox.y);
-        }
-        else if(Direction.WEST.equals(direction)){
+        } else if (Direction.WEST.equals(direction)) {
             hitBox.setLocation(hitBox.x - vit, hitBox.y);
         }
         //Size of the map hitbox brut
-        if(hitBox.getY()+100 >= dimension.getHeight() || hitBox.getY() <= 0
-                || hitBox.getX()+100 >= dimension.getWidth() || hitBox.getX() <= 0){
+        if (hitBox.getY() + 100 >= dimension.getHeight() || hitBox.getY() <= 0 || hitBox.getX() + 100 >= dimension.getWidth() || hitBox.getX() <= 0) {
             return null;
         }
 
@@ -186,7 +199,7 @@ public class Model extends Observable {
     /**
      * Permet de reset le jeu
      */
-    public void reset(){
+    public void reset() {
 
         for (ObjectHitbox obj : listReset.keySet()) {
             resetObjetCollision(obj);
@@ -196,9 +209,10 @@ public class Model extends Observable {
 
     /**
      * Permet de remettre l'objet à son état initiale.
+     *
      * @param obj
      */
-    private void resetObjetCollision(ObjectHitbox obj){
+    private void resetObjetCollision(ObjectHitbox obj) {
         Point point = listReset.get(obj);
         obj.setPosition(point);
         updateMove(obj);
@@ -207,9 +221,10 @@ public class Model extends Observable {
 
     /**
      * Permet de supprimer un objet sur la care courante.
+     *
      * @param obj
      */
-    public void removeObjet(ObjectHitbox obj){
+    public void removeObjet(ObjectHitbox obj) {
         map.removeObj(obj);
         updateHide(obj);
     }

@@ -13,7 +13,7 @@ import java.util.List;
  * Created by JuIngong on 22/11/2016.
  */
 public class RobotAction {
-    private static final long TIME = 1000;
+    private static final long TIME = 100;
 
     private Robot robot;
 
@@ -24,6 +24,7 @@ public class RobotAction {
         public void run() {
             if (robot.getEnergy() < 100) {
                 robot.setEnergy(robot.getEnergy() + 1);
+                energyChange();
             }
             Model model = Model.getModel();
             Direction direction = Direction.getDirection(robot.getMovement().move(robot.getPosition(), model.listEnemy(robot)));
@@ -48,6 +49,14 @@ public class RobotAction {
 
         timer = new Timer();
         timer.schedule(timerTask, 0, TIME);
+    }
+
+
+    /**
+     */
+    private void energyChange() {
+        Model model = Model.getModel();
+        model.useEnergy(robot);
     }
 
 

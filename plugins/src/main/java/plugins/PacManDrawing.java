@@ -11,4 +11,14 @@ public class PacManDrawing implements IDrawing{
 		g.fillArc(0,0,150,150,30,300);
 	}
 
+	@Override
+	public void colorLife(Graphics g) {
+		g.setColor(Color.red);
+	}
+
+	@Override
+	public void colorEnergy(Graphics g) {
+		g.setColor(Color.green);
+	}
+
 }

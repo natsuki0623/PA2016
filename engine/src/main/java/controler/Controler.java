@@ -31,16 +31,10 @@ public class Controler {
     private List<RobotAction> robotActions;
 
     private JFrame frame;
-    private MapView mapView;
 
     private JFrame lastFrame;
 
     private boolean launch = false;
-
-    private JMenuBar menuBar;
-    private JMenu gameMenu;
-    private JMenuItem loadSave;
-    private JMenuItem saveSave;
 
 
     public Controler(JFrame lastFrame, HashMap<String, Object> data) {
@@ -56,7 +50,7 @@ public class Controler {
         if (!launch) {
             initFrame(data);
         }
-        mapView = new MapView(toListPanel(objectHitboxes));
+        MapView mapView = new MapView(toListPanel(objectHitboxes));
         Model.createModel(new Map(objectHitboxes), robotActions, frame.getSize());
         for (ObjectHitbox o : objectHitboxes) {
             if (o.getType().equals(ObjectHitbox.Type.Robot.name())) {
@@ -76,50 +70,55 @@ public class Controler {
 
         ArrayList<ObjectHitbox> listObj = new ArrayList<>();
         List<HashMap<String, Object>> map = (List<HashMap<String, Object>>) hm.get("carte");
+        ObjectHitbox obj;
 
         for (int i = 0; i < map.size(); i++) {
             HashMap<String, Object> descObj = map.get(i);
-            File file = null;
-            if (descObj.containsKey("path")) {
-                file = (File) descObj.get("path");
-            }
-            String move = null, attack = null, drawing = null;
+            if (((String) descObj.get("type")).equals(ObjectHitbox.Type.Robot.name())) {
+                File file = null;
+                if (descObj.containsKey("path")) {
+                    file = (File) descObj.get("path");
+                }
+                String move = null, attack = null, drawing = null;
 
-            if (descObj.containsKey("move")) {
-                move = (String) descObj.get("move");
-            }
-            if (descObj.containsKey("attack")) {
-                attack = (String) descObj.get("attack");
-            }
-            if (descObj.containsKey("draw")) {
-                drawing = (String) descObj.get("draw");
-            }
-            PluginsLoader pl = new PluginsLoader();
-            IAttack attack1 = null;
-            IDrawing drawing1 = null;
-            IMovement movement = null;
-            try {
-                pl.init(file);
-                for (Class<?> p : pl.getPlugins()) {
-                    if (p.getInterfaces()[0].getName().equals("IPlugin.IAttack") && p.getName().equals(attack)) {
-                        attack1 = (IAttack) p.newInstance();
-                    } else if (p.getInterfaces()[0].getName().equals("IPlugin.IDrawing") && p.getName().equals(drawing)) {
-                        drawing1 = (IDrawing) p.newInstance();
-                    } else if (p.getInterfaces()[0].getName().equals("IPlugin.IMovement") && p.getName().equals(move)) {
-                        movement = (IMovement) p.newInstance();
+                if (descObj.containsKey("move")) {
+                    move = (String) descObj.get("move");
+                }
+                if (descObj.containsKey("attack")) {
+                    attack = (String) descObj.get("attack");
+                }
+                if (descObj.containsKey("draw")) {
+                    drawing = (String) descObj.get("draw");
+                }
+                PluginsLoader pl = new PluginsLoader();
+                IAttack attack1 = null;
+                IDrawing drawing1 = null;
+                IMovement movement = null;
+                try {
+                    pl.init(file);
+                    for (Class<?> p : pl.getPlugins()) {
+                        if (p.getInterfaces()[0].getName().equals("IPlugin.IAttack") && p.getName().equals(attack)) {
+                            attack1 = (IAttack) p.newInstance();
+                        } else if (p.getInterfaces()[0].getName().equals("IPlugin.IDrawing") && p.getName().equals(drawing)) {
+                            drawing1 = (IDrawing) p.newInstance();
+                        } else if (p.getInterfaces()[0].getName().equals("IPlugin.IMovement") && p.getName().equals(move)) {
+                            movement = (IMovement) p.newInstance();
+                        }
                     }
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
+
+                obj = ObjectHitbox.createObjecHitbox(descObj, attack1, drawing1, movement);
+            } else {
+                obj = ObjectHitbox.createObjecHitbox(descObj);
             }
-
-
-            ObjectHitbox obj = ObjectHitbox.createObjecHitbox(descObj, attack1, drawing1, movement);
             listObj.add(obj);
         }
 
@@ -143,6 +142,47 @@ public class Controler {
         return listPanel;
     }
 
+    public HashMap<String, Object> buildHashmap(HashMap<String, Object> old) {
+        HashMap<String, Object> data = new HashMap<>();
+        java.util.List<HashMap<String, Object>> map = new ArrayList<HashMap<String, Object>>();
+        if (old.containsKey("hauteur")) {
+            data.put("hauteur", old.get("hauteur"));
+        }
+        if (old.containsKey("largeur")) {
+            data.put("largeur", old.get("largeur"));
+        }
+        data.put("carte", map);
+
+        for (ObjectHitbox obj : Model.getModel().getMap().getObjets()) {
+            HashMap<String, Object> desc = new HashMap<>();
+            map.add(desc);
+
+            Rectangle rect = obj.getHitBox();
+            desc.put("largeur", rect.width);
+            desc.put("hauteur", rect.height);
+            desc.put("x", rect.x);
+            desc.put("y", rect.y);
+            desc.put("type", obj.getType());
+            if (obj.getType().equals(ObjectHitbox.Type.Robot.name())) {
+                List<HashMap<String, Object>> map2 = (List<HashMap<String, Object>>) old.get("carte");
+
+                for (int i = 0; i < map2.size(); i++) {
+                    HashMap<String, Object> descObj = map2.get(i);
+                    if (descObj.containsKey("path")) {
+                        File file = (File) descObj.get("path");
+                        desc.put("path", file);
+                    }
+                }
+                desc.put("attack", ((model.entity.robot.Robot) obj).getAttack().getClass().getName());
+                desc.put("draw", ((model.entity.robot.Robot) obj).getDrawing().getClass().getName());
+                desc.put("move", ((model.entity.robot.Robot) obj).getMovement().getClass().getName());
+                desc.put("vie", ((model.entity.robot.Robot) obj).getLife());
+                desc.put("energie", ((model.entity.robot.Robot) obj).getEnergy());
+            }
+        }
+        return data;
+    }
+
     private void initFrame(HashMap<String, Object> data) {
         //Frame
         frame = new JFrame("RobotWar");
@@ -159,34 +199,33 @@ public class Controler {
         frame.setSize((int) (dim.getWidth()), (int) (dim.getHeight()));
         frame.setLocationRelativeTo(null);
 
-        this.menuBar = new JMenuBar();
-        this.gameMenu = new JMenu();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu();
 
-        this.menuBar.add(gameMenu);
+        menuBar.add(gameMenu);
 
-        this.loadSave = new JMenuItem();
+        JMenuItem loadSave = new JMenuItem();
         //Le chargement
-        this.saveSave = new JMenuItem();
+        JMenuItem saveSave = new JMenuItem();
 
         //On ajoute les items au menu
-        this.gameMenu.setText("Partie");
-        this.gameMenu.add(this.saveSave);
-        this.gameMenu.add(this.loadSave);
+        gameMenu.setText("Partie");
+        gameMenu.add(saveSave);
+        gameMenu.add(loadSave);
 
-        this.loadSave.setText("Charger sauvegarde");
-        this.saveSave.setText("Sauvegarder partie");
-        frame.setJMenuBar(this.menuBar);
+        loadSave.setText("Charger sauvegarde");
+        saveSave.setText("Sauvegarder partie");
+        frame.setJMenuBar(menuBar);
 
         //TODO Don't work
 
-        this.saveSave.addActionListener(new ActionListener() {
+        saveSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    FileOutputStream fos =
-                            new FileOutputStream("hashmap.ser");
+                    FileOutputStream fos = new FileOutputStream("robot.ser");
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
-                    oos.writeObject(data);
+                    oos.writeObject(buildHashmap(data));
                     oos.close();
                     fos.close();
                 } catch (IOException ioe) {
@@ -195,27 +234,25 @@ public class Controler {
             }
         });
 
-        this.loadSave.addActionListener(new ActionListener() {
+        loadSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 launch = true;
                 HashMap<String, Object> dataB;
                 try {
-                    FileInputStream fis = new FileInputStream("hashmap.ser");
+                    FileInputStream fis = new FileInputStream("robot.ser");
                     ObjectInputStream ois = new ObjectInputStream(fis);
                     dataB = (HashMap) ois.readObject();
                     ois.close();
                     fis.close();
-                } catch (IOException ioe) {
+                } catch (IOException | ClassNotFoundException ioe) {
                     ioe.printStackTrace();
                     return;
-                } catch (ClassNotFoundException c) {
-                    c.printStackTrace();
-                    return;
                 }
-                // Display content using Iterator
-                robotActions = new ArrayList<>();
-                initMap(dataB);
+                if (dataB != null) {
+                    robotActions = new ArrayList<>();
+                    initMap(dataB);
+                }
             }
 
         });

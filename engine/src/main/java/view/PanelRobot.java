@@ -15,9 +15,11 @@ public class PanelRobot extends JPanel {
     private IAttack attack;
     private int opacity;
     private boolean att;
+    private int opacityEnergy;
 
     public PanelRobot(IDrawing drawing, Rectangle rectangle) {
         opacity = 255;
+        opacityEnergy = 255;
         this.drawing = drawing;
         setBounds(rectangle);
         setOpaque(false);
@@ -27,8 +29,12 @@ public class PanelRobot extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         drawing.draw(g);
-        g.setColor(new Color(Color.red.getRed(),Color.red.getGreen(),Color.red.getBlue(),opacity));
+        drawing.colorLife(g);
+        g.setColor(new Color(g.getColor().getRed(),g.getColor().getGreen(),g.getColor().getBlue(),opacity));
         g.fillRect(0,0,50,10);
+        drawing.colorEnergy(g);
+        g.setColor(new Color(g.getColor().getRed(),g.getColor().getGreen(),g.getColor().getBlue(),opacityEnergy));
+        g.fillRect(0,40,50,10);
         if(att){
             attack.animation(g);
         }
@@ -51,5 +57,9 @@ public class PanelRobot extends JPanel {
 
     public void setAttack(IAttack attack) {
         this.attack = attack;
+    }
+
+    public void setOpacityEnergy(int opacityEnergy) {
+        this.opacityEnergy = opacityEnergy;
     }
 }

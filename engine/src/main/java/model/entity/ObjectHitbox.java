@@ -211,15 +211,17 @@ public class ObjectHitbox {
             return null;
         }
 
-        String type = (String) descObj.get("type");
-        int x = 0, y = 0, largeur = 0, hauteur = 0, damage = 0;
+        int x = 0, y = 0, largeur = 0, hauteur = 0, vie = 0, energy = 0;
         if (descObj.containsKey("x")) x = (int) descObj.get("x");
         if (descObj.containsKey("y")) y = (int) descObj.get("y");
         if (descObj.containsKey("largeur")) largeur = (int) descObj.get("largeur");
         if (descObj.containsKey("hauteur")) hauteur = (int) descObj.get("hauteur");
 
+        if (descObj.containsKey("vie")) vie = (int) descObj.get("vie");
+        if (descObj.containsKey("energie")) energy = (int) descObj.get("energie");
+
         Rectangle rect = new Rectangle(x, y, largeur, hauteur);
-        return new Robot(100, 100, rect, drawing, attack, movement);
+        return new Robot(vie, energy, rect, drawing, attack, movement);
 
     }
 

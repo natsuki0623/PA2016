@@ -39,6 +39,9 @@ public class MapView extends JPanel implements Observer {
         } else if (data.containsKey("damage")) {
             damage(((HashMap<String, Object>) data.get("damage")));
             repaint();
+        } else if (data.containsKey("energy")) {
+            energy(((HashMap<String, Object>) data.get("energy")));
+            repaint();
         }
     }
 
@@ -49,7 +52,6 @@ public class MapView extends JPanel implements Observer {
         PanelRobot panel = (PanelRobot) listPanel.get(id);
         if (panel != null) {
             panel.setLocation(point);
-            panel.hideAtt();
         }
 
     }
@@ -71,9 +73,19 @@ public class MapView extends JPanel implements Observer {
         }
     }
 
+    private void energy(HashMap<String, Object> data) {
+        int energy = (int) data.get("energy");
+        int id = (int) data.get("id");
+
+        PanelRobot panel = (PanelRobot) listPanel.get(id);
+        if (panel != null) {
+            panel.hideAtt();
+            panel.setOpacityEnergy(255 * energy / 100);
+        }
+    }
+
     private void initListPanel() {
         if (listPanel == null || listPanel.isEmpty()) {
-            System.err.println("ERROR: initListPanel is null || empty");
             return;
         }
 
