@@ -67,7 +67,7 @@ public class RobotAction {
     private void moveRobot(Direction direction) {
         Model model = Model.getModel();
         List<ObjectHitbox> listObj = model.listObjHitbox(robot, direction);
-        if (listObj.isEmpty()) {
+        if (listObj != null && listObj.isEmpty()) {
             model.moveRobot(robot, direction);
         }
     }

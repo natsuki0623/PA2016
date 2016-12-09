@@ -17,6 +17,7 @@ public class Model extends Observable {
 
     private static Model model = null;
     private Map map;
+    private Dimension dimension;
 
     private List<RobotAction> robotActions;
 
@@ -24,14 +25,15 @@ public class Model extends Observable {
     private HashMap<ObjectHitbox, Point> listReset;
 
     // ------------------------------------------- Singleton
-    private Model(Map map, List<RobotAction> robotAction) {
+    private Model(Map map, List<RobotAction> robotAction, Dimension size) {
         this.map = map;
         this.robotActions = robotAction;
+        this.dimension = size;
         listReset = new HashMap<>();
     }
 
-    public static Model createModel( Map map, List<RobotAction> robotAction){
-        model = new Model(map,robotAction);
+    public static Model createModel( Map map, List<RobotAction> robotAction, Dimension size){
+        model = new Model(map,robotAction, size);
         return model;
     }
 
@@ -103,7 +105,6 @@ public class Model extends Observable {
         robot.setEnergy(robot.getEnergy()-robot.getAttack().energy());
         for(Robot r : getMap().getEnemy(robot)){
           if(r.isTouch(point)){
-              System.out.println(r.getId() + " " + r.getLife());
               r.setLife(r.getLife()-robot.getAttack().attaque());
               if(r.getLife() <= 0) {
                   updateHide(r);
@@ -172,6 +173,11 @@ public class Model extends Observable {
         }
         else if(Direction.WEST.equals(direction)){
             hitBox.setLocation(hitBox.x - vit, hitBox.y);
+        }
+        //Size of the map hitbox brut
+        if(hitBox.getY()+100 >= dimension.getHeight() || hitBox.getY() <= 0
+                || hitBox.getX()+100 >= dimension.getWidth() || hitBox.getX() <= 0){
+            return null;
         }
 
         return getMap().isInContact(hitBox, objectHitbox);

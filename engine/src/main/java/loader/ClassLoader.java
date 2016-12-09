@@ -333,7 +333,6 @@ public class ClassLoader extends  SecureClassLoader {
 	private byte[] loadClassData(String name) throws ClassNotFoundException {
 		
 		File fichier = new File(paths);
-		System.out.println(fichier.getName());
 
 		try {
 			return Files.readAllBytes(fichier.toPath());

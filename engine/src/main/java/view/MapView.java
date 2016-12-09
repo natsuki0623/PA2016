@@ -47,8 +47,10 @@ public class MapView extends JPanel implements Observer {
         int id = (int) data.get("id");
 
         PanelRobot panel = (PanelRobot) listPanel.get(id);
-        panel.setLocation(point);
-        panel.hideAtt();
+        if (panel != null) {
+            panel.setLocation(point);
+            panel.hideAtt();
+        }
 
     }
 
@@ -61,10 +63,12 @@ public class MapView extends JPanel implements Observer {
         int id = (int) data.get("id");
         int sourceId = (int) data.get("sourceId");
 
-        PanelRobot panel = (PanelRobot)listPanel.get(id);
-        PanelRobot panelSource = (PanelRobot)listPanel.get(sourceId);
-        panel.setOpacity(255*life/100);
-        panelSource.showAtt();
+        PanelRobot panel = (PanelRobot) listPanel.get(id);
+        PanelRobot panelSource = (PanelRobot) listPanel.get(sourceId);
+        panel.setOpacity(255 * life / 100);
+        if (panelSource != null) {
+            panelSource.showAtt();
+        }
     }
 
     private void initListPanel() {

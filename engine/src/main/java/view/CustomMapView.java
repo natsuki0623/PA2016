@@ -29,10 +29,10 @@ public class CustomMapView extends JPanel {
         setBackground(Color.white);
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                Cell c = new Cell();
-                c.setBounds(x * width, y * height, width, height);
-                add(c);
-                jPanelMap.put(new Point(x * width, y * height), c);
+                    Cell c = new Cell();
+                    c.setBounds(x * width, y * height, width, height);
+                    add(c);
+                    jPanelMap.put(new Point(x * width, y * height), c);
             }
         }
 

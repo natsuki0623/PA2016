@@ -202,17 +202,25 @@ public class ObjectHitbox {
         if (descObj.containsKey("hauteur")) hauteur = (int) descObj.get("hauteur");
 
         Rectangle rect = new Rectangle(x, y, largeur, hauteur);
-        if (Type.Robot.name().equals(type)){
-            IMovement move = null;
-            IAttack attack = null;
-            IDrawing drawing = null;
-            if (descObj.containsKey("move")) {move = (IMovement) descObj.get("move");}
-            if (descObj.containsKey("attack")) {attack = (IAttack) descObj.get("attack");}
-            if (descObj.containsKey("draw")) {drawing = (IDrawing) descObj.get("draw");}
-            return new Robot(100, 100, rect, drawing, attack, move);
-        }
 
         return new ObjectHitbox(rect);
+    }
+
+    public static ObjectHitbox createObjecHitbox(HashMap<String, java.lang.Object> descObj, IAttack attack, IDrawing drawing, IMovement movement) {
+        if (descObj == null || descObj.isEmpty()) {
+            return null;
+        }
+
+        String type = (String) descObj.get("type");
+        int x = 0, y = 0, largeur = 0, hauteur = 0, damage = 0;
+        if (descObj.containsKey("x")) x = (int) descObj.get("x");
+        if (descObj.containsKey("y")) y = (int) descObj.get("y");
+        if (descObj.containsKey("largeur")) largeur = (int) descObj.get("largeur");
+        if (descObj.containsKey("hauteur")) hauteur = (int) descObj.get("hauteur");
+
+        Rectangle rect = new Rectangle(x, y, largeur, hauteur);
+        return new Robot(100, 100, rect, drawing, attack, movement);
+
     }
 
 

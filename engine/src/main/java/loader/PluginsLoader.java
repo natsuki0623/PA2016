@@ -431,7 +431,6 @@
 /**
  * j'appel la methode load du plugin loader
  * load appel init
- * 
  */
 
 package loader;
@@ -460,219 +459,208 @@ import IPlugin.IPlugin;
  * PluginsLoader est le moteur de chargement des plugins. A partir d'un fichier
  * 'base', il va chercher les classes dont au moins une des interfaces
  * correspond aux interfaces des plugins.
- * 
+ *
  * @author Dragos
  *
  */
 public class PluginsLoader {
 
-	private ArrayList<Class<?>> plugins;
-	private Class<?> typePlugin;
+    private ArrayList<Class<?>> plugins;
+    private Class<?> typePlugin;
 
-	public PluginsLoader() {
-		this.plugins = new ArrayList<Class<?>>();
-		this.typePlugin = IPlugin.class;
-	}
+    public PluginsLoader() {
+        this.plugins = new ArrayList<Class<?>>();
+        this.typePlugin = IPlugin.class;
+    }
 
-	public PluginsLoader(Class<?> typePlugin) {
-		this.plugins = new ArrayList<Class<?>>();
-		this.typePlugin = typePlugin;
-	}
+    public PluginsLoader(Class<?> typePlugin) {
+        this.plugins = new ArrayList<Class<?>>();
+        this.typePlugin = typePlugin;
+    }
 
-	public ArrayList<Class<?>> getPlugins() {
-		return this.plugins;
-	}
+    public ArrayList<Class<?>> getPlugins() {
+        return this.plugins;
+    }
 
-	public Class<?> getTypePlugin() {
-		return this.typePlugin;
-	}
+    public Class<?> getTypePlugin() {
+        return this.typePlugin;
+    }
 
-	public void setTypePlugin(Class<?> typePlugin) {
-		this.typePlugin = typePlugin;
-	}
+    public void setTypePlugin(Class<?> typePlugin) {
+        this.typePlugin = typePlugin;
+    }
 
-	/**
-	 * Cette méthode permet de créer des instances des plugins.
-	 * 
-	 * @param fichier
-	 *            f (l'endroit où les classes des plugins se trouvent)
-	 * @return un tableau de plugins (instances des classes des plugins)
-	 * @throws ClassNotFoundException
-	 */
-	public IPlugin[] load(File f) throws ClassNotFoundException {
-		this.init(f);
+    /**
+     * Cette méthode permet de créer des instances des plugins.
+     *
+     * @param fichier
+     *            f (l'endroit où les classes des plugins se trouvent)
+     * @return un tableau de plugins (instances des classes des plugins)
+     * @throws ClassNotFoundException
+     */
+    public IPlugin[] load(File f) throws ClassNotFoundException {
+        this.init(f);
 
-		IPlugin[] tmpPlugins = new IPlugin[plugins.size()];
-		try {
-			for (int i = 0; i < tmpPlugins.length; i++) {
-				tmpPlugins[i] = (IPlugin) ((Class) plugins.get(i)).newInstance();
-			}
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return tmpPlugins;
+        IPlugin[] tmpPlugins = new IPlugin[plugins.size()];
+        try {
+            for (int i = 0; i < tmpPlugins.length; i++) {
+                tmpPlugins[i] = (IPlugin) ((Class) plugins.get(i)).newInstance();
+            }
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return tmpPlugins;
 
-	}
+    }
 
-	/**
+    /**
      * Chargement des plugins se trouvant dans f. Cette méthode est appelée lors
      * du des plugins.
-     * 
+     *
      * @param f
      * @throws ClassNotFoundException
      */
     public void init(File f) throws ClassNotFoundException {
-	// On crée une instance du GeneralClassLoader et on ajoute f à sa liste
-	// de paths
-	ClassLoader cl = new ClassLoader();
-	
-	// Initialisation des variables
-	String className = "";
-	int startIndex = f.toString().length() + 1;
-	int endIndex;
+        // On crée une instance du GeneralClassLoader et on ajoute f à sa liste
+        // de paths
+        ClassLoader cl = new ClassLoader();
 
-	// Si l'on cherche les plugins dans un répertoire
-	if (f.isDirectory()) {
-	    /*
+        // Initialisation des variables
+        String className = "";
+        int startIndex = f.toString().length() + 1;
+        int endIndex;
+
+        // Si l'on cherche les plugins dans un répertoire
+        if (f.isDirectory()) {
+        /*
 	     * A l'aide du SimpleFileVisitor on cherche toutes les fichiers
 	     * .class se retrouvant dans l'arborescence du f.
 	     */
-	    final List<File> files = new ArrayList<File>();
-	    try {
-		Files.walkFileTree(f.toPath(), new SimpleFileVisitor<Path>() {
-		    @Override
-		    public FileVisitResult visitFile(Path file,
-			    BasicFileAttributes attrs) throws IOException {
-			if (file.toString().endsWith(".class")) {
+            final List<File> files = new ArrayList<File>();
+            try {
+                Files.walkFileTree(f.toPath(), new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file,
+                                                     BasicFileAttributes attrs) throws IOException {
+                        if (file.toString().endsWith(".class")) {
 
-			    files.add(file.toFile());
-			}
-			return FileVisitResult.CONTINUE;
-		    }
+                            files.add(file.toFile());
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
 
-		});
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-	    // On parcourt la liste de classes
-	    for (File file : files) {
-		endIndex = file.toString().length() - 6; // Cela sert à enlever
-							 // le '.class'
-		className = file.toString().substring(startIndex, endIndex)
-			.replace("\\", ".");
-		
-		cl.addPath(f.getPath()+"/"+className.replace(".", "\\")+".class");
-		String [] test =f.getAbsolutePath().split("\\\\");
-		String type = test[test.length-1];
-		
-		
-		if(f.getPath().contains("pluginAttack")){
-			className = "pluginAttack."+className;
-			}
-		if(f.getPath().contains("pluginDrawing")){
-			className = "pluginDrawing."+className;
-			}
-		if(f.getPath().contains("pluginMovement")){
-			className = "pluginMovement."+className;
-			}
-		
-		Class<?> tmpClass = cl.findClass(className);
-		// On regarde si la classe a des interfaces, sinon, ce n'est
-		// même pas la peine d'y regarder
- 		if (tmpClass.getInterfaces().length != 0) {
-		    // On parcourt les interfaces
-		    for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
-			if (typePlugin.isAssignableFrom(tmpClass
-				.getInterfaces()[i])) {
-			    plugins.add(cl.loadClass(className));
-			}
-		    }
-		}
-	    }
-	}
-	// Si l'on cherche les plugins dans une archive .jar
-	else if (f.isFile() && f.getName().endsWith(".jar")) {
-	    try {
-		JarFile jar = new JarFile(f);
-		Enumeration<? extends JarEntry> jarEntries = jar.entries();
-		// On parcourt les entrées du fichier jar
-		while (jarEntries.hasMoreElements()) {
-		    JarEntry jarEntry = jarEntries.nextElement();
-		    if (jarEntry.toString().endsWith(".class")) {
-			endIndex = jarEntry.toString().length() - 6; // Cela
-								     // sert à
-								     // enlever
-								     // le
-								     // '.class'
-			className = jarEntry.toString().substring(0, endIndex)
-				.replace("/", ".");
-			Class<?> tmpClass = Class.forName(className, true, cl);
-			// on regarde si la classe a des interfaces, sinon, ce
-			// n'est même pas la peine d'y regarder
-			if (tmpClass.getInterfaces().length != 0) {
-			    // On parcourt les interfaces
-			    for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
-				if (typePlugin.isAssignableFrom(tmpClass
-					.getInterfaces()[i]))
-				    plugins.add(cl.loadClass(className));
-			    }
-			}
-		    }
-		}
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	}
-	// Si l'on cherche les plugins dans une archive .zip
-	else if (f.isFile() && f.getName().endsWith(".zip")) {
-	    try {
-		ZipFile zip = new ZipFile(f);
-		Enumeration<? extends ZipEntry> zipEntries = zip.entries();
+            // On parcourt la liste de classes
+            for (File file : files) {
+                endIndex = file.toString().length() - 6; // Cela sert à enlever
+                // le '.class'
+                className = file.toString().substring(startIndex, endIndex)
+                        .replace("\\", ".");
 
-		// On parcourt les entrées du fichier zip
-		while (zipEntries.hasMoreElements()) {
-		    ZipEntry zipEntry = zipEntries.nextElement();
-		    if (zipEntry.toString().endsWith(".class")) {
-			endIndex = zipEntry.toString().length() - 6; 
-								// Cela
-								     // sert à
-								     // enlever
-								     // le
-								     // '.class'
-			className = zipEntry.toString().substring(0, endIndex)
-				.replace("/", ".");
-			Class<?> tmpClass = Class.forName(className, true, cl);
-			// On regarde si la classe a des interfaces, sinon, ce
-			// n'est même pas la peine d'y regarder
-			if (tmpClass.getInterfaces().length != 0) {
-			    // on parcourt les interfaces
-			    for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
-				// On regarde si l'interface est
-				if (typePlugin.isAssignableFrom(tmpClass
-					.getInterfaces()[i]))
-				    plugins.add(cl.loadClass(className));
-			    }
-			}
-		    }
-		}
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	}
+                cl.addPath(f.getPath() + "/" + className.replace(".", "\\") + ".class");
+                String[] test = f.getAbsolutePath().split("\\\\");
+                String type = test[test.length - 1];
+
+
+                if (f.getPath().contains("pluginAttack")) {
+                    className = "pluginAttack." + className;
+                }
+                if (f.getPath().contains("pluginDrawing")) {
+                    className = "pluginDrawing." + className;
+                }
+                if (f.getPath().contains("pluginMovement")) {
+                    className = "pluginMovement." + className;
+                }
+
+                Class<?> tmpClass = cl.findClass(className);
+                // On regarde si la classe a des interfaces, sinon, ce n'est
+                // même pas la peine d'y regarder
+                if (tmpClass.getInterfaces().length != 0) {
+                    // On parcourt les interfaces
+                    for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
+                        if (typePlugin.isAssignableFrom(tmpClass
+                                .getInterfaces()[i])) {
+                            plugins.add(cl.loadClass(className));
+                        }
+                    }
+                }
+            }
+        }
+        // Si l'on cherche les plugins dans une archive .jar
+        else if (f.isFile() && f.getName().endsWith(".jar")) {
+            try {
+                JarFile jar = new JarFile(f);
+                Enumeration<? extends JarEntry> jarEntries = jar.entries();
+                // On parcourt les entrées du fichier jar
+                while (jarEntries.hasMoreElements()) {
+                    JarEntry jarEntry = jarEntries.nextElement();
+                    if (jarEntry.toString().endsWith(".class")) {
+                        endIndex = jarEntry.toString().length() - 6; // Cela
+                        // sert à
+                        // enlever
+                        // le
+                        // '.class'
+                        className = jarEntry.toString().substring(0, endIndex)
+                                .replace("/", ".");
+                        Class<?> tmpClass = Class.forName(className, true, cl);
+                        // on regarde si la classe a des interfaces, sinon, ce
+                        // n'est même pas la peine d'y regarder
+                        if (tmpClass.getInterfaces().length != 0) {
+                            // On parcourt les interfaces
+                            for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
+                                if (typePlugin.isAssignableFrom(tmpClass
+                                        .getInterfaces()[i]))
+                                    plugins.add(cl.loadClass(className));
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // Si l'on cherche les plugins dans une archive .zip
+        else if (f.isFile() && f.getName().endsWith(".zip")) {
+            try {
+                ZipFile zip = new ZipFile(f);
+                Enumeration<? extends ZipEntry> zipEntries = zip.entries();
+
+                // On parcourt les entrées du fichier zip
+                while (zipEntries.hasMoreElements()) {
+                    ZipEntry zipEntry = zipEntries.nextElement();
+                    if (zipEntry.toString().endsWith(".class")) {
+                        endIndex = zipEntry.toString().length() - 6;
+                        // Cela
+                        // sert à
+                        // enlever
+                        // le
+                        // '.class'
+                        className = zipEntry.toString().substring(0, endIndex)
+                                .replace("/", ".");
+                        Class<?> tmpClass = Class.forName(className, true, cl);
+                        // On regarde si la classe a des interfaces, sinon, ce
+                        // n'est même pas la peine d'y regarder
+                        if (tmpClass.getInterfaces().length != 0) {
+                            // on parcourt les interfaces
+                            for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
+                                // On regarde si l'interface est
+                                if (typePlugin.isAssignableFrom(tmpClass
+                                        .getInterfaces()[i]))
+                                    plugins.add(cl.loadClass(className));
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-	public static void main(String[] args) throws ClassNotFoundException {
-		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new java.io.File("."));
-		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fc.showOpenDialog(null);
-		File file1 = fc.getSelectedFile();
-		System.out.println(file1.getAbsolutePath());
-		PluginsLoader pl = new PluginsLoader();
-		pl.init(file1);
-		System.out.println(pl.getPlugins());
-	}
 }

@@ -113,9 +113,10 @@ public class CustomMapListener implements KeyListener, MouseListener {
             desc.put("y", rect.y);
             desc.put("type", obj.getType());
             if (obj.getType().equals(ObjectHitbox.Type.Robot.name())) {
-                desc.put("attack", ((model.entity.robot.Robot) obj).getAttack());
-                desc.put("draw", ((model.entity.robot.Robot) obj).getDrawing());
-                desc.put("move", ((model.entity.robot.Robot) obj).getMovement());
+                desc.put("path", controler.getFilePlugin());
+                desc.put("attack", ((model.entity.robot.Robot) obj).getAttack().getClass().getName());
+                desc.put("draw", ((model.entity.robot.Robot) obj).getDrawing().getClass().getName());
+                desc.put("move", ((model.entity.robot.Robot) obj).getMovement().getClass().getName());
             }
         }
 
