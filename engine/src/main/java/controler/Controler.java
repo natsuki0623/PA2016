@@ -217,8 +217,6 @@ public class Controler {
         saveSave.setText("Sauvegarder partie");
         frame.setJMenuBar(menuBar);
 
-        //TODO Don't work
-
         saveSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -250,6 +248,9 @@ public class Controler {
                     return;
                 }
                 if (dataB != null) {
+                    for (RobotAction r : robotActions) {
+                        r.cancelTimer();
+                    }
                     robotActions = new ArrayList<>();
                     initMap(dataB);
                 }
